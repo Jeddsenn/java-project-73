@@ -1,4 +1,4 @@
-package hexlet.code.demo;
+package hexlet.code.app;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
