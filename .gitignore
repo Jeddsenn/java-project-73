@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+node
+fronetend/build
+frontend/node_modules
