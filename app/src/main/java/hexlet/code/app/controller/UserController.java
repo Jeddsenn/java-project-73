@@ -26,29 +26,27 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable long id){
+    public Optional<User> getUser(@PathVariable long id) {
         return userRepository.findById(id);
     }
 
     @GetMapping("")
-    public Iterable<User> getUsers(){
+    public Iterable<User> getUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping("")
-    public User createUser(@RequestBody @Valid UserDto userDto){
+    public User createUser(@RequestBody @Valid UserDto userDto) {
         return userService.createNewUser(userDto);
     }
 
     @PutMapping("{id}")
-    public User updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserDto userDto){
+    public User updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserDto userDto) {
         return userService.updateUser(id, userDto);
     }
 
     @DeleteMapping("{id}")
-    public void deleteUser(@PathVariable long id){
+    public void deleteUser(@PathVariable long id) {
         userRepository.deleteById(id);
     }
 }
-
-
