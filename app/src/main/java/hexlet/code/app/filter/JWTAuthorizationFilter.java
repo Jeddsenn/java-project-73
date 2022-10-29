@@ -60,6 +60,6 @@ public final class JWTAuthorizationFilter extends OncePerRequestFilter {
                 SecurityConfig.DEFAULT_AUTHORITIES
         );
     }
-
 }
+
 

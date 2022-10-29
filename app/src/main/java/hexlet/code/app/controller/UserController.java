@@ -10,13 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+
+import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("${base-url}" + USER_CONTROLLER_PATH)
 public class UserController {
+
+    public static final String USER_CONTROLLER_PATH = "/users";
+    public static final String ID = "/{id}";
 
     @Autowired
     private final UserService userService;
@@ -31,9 +37,12 @@ public class UserController {
     }
 
     @GetMapping("")
-    public Iterable<User> getUsers() {
-        return userRepository.findAll();
+    public List<User> getAll() throws Exception {
+        return userRepository.findAll()
+                .stream()
+                .toList();
     }
+
 
     @PostMapping("")
     public User createUser(@RequestBody @Valid UserDto userDto) {

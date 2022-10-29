@@ -16,31 +16,32 @@ import static io.jsonwebtoken.impl.TextCodec.BASE64;
 @Component
 public class JWTHelper {
 
+    private static final int THOUSAND = 1000;
     private final String secretKey;
     private final String issuer;
     private final Long expirationSec;
     private final Long clockSkewSec;
     private final Clock clock;
 
-    public JWTHelper(@Value("${jwt.issuer:spring_blog}") final String issuer,
-                     @Value("${jwt.expiration-sec:86400}") final Long expirationSec,
-                     @Value("${jwt.clock-skew-sec:300}") final Long clockSkewSec,
+    public JWTHelper(@Value("${jwt.issuer:meeeh}") final String issuerValue,
+                     @Value("${jwt.expiration-sec:86400}") final Long expirationSecValue,
+                     @Value("${jwt.clock-skew-sec:300}") final Long clockSkewSecValue,
                      @Value("${jwt.secret:secret}") final String secret) {
         this.secretKey = BASE64.encode(secret);
-        this.issuer = issuer;
-        this.expirationSec = expirationSec;
-        this.clockSkewSec = clockSkewSec;
+        this.issuer = issuerValue;
+        this.expirationSec = expirationSecValue;
+        this.clockSkewSec = clockSkewSecValue;
         this.clock = DefaultClock.INSTANCE;
     }
 
-    public String expiring(final Map<String, Object> attributes) {
+    public final String expiring(final Map<String, Object> attributes) {
         return Jwts.builder()
                 .signWith(HS256, secretKey)
                 .setClaims(getClaims(attributes, expirationSec))
                 .compact();
     }
 
-    public Map<String, Object> verify(final String token) {
+    public final Map<String, Object> verify(final String token) {
         return Jwts.parser()
                 .requireIssuer(issuer)
                 .setClock(clock)
@@ -56,7 +57,7 @@ public class JWTHelper {
         claims.setIssuedAt(clock.now());
         claims.putAll(attributes);
         if (expiresInSec > 0) {
-            claims.setExpiration(new Date(System.currentTimeMillis() + expiresInSec * 1000));
+            claims.setExpiration(new Date(System.currentTimeMillis() + expiresInSec * THOUSAND));
         }
         return claims;
     }

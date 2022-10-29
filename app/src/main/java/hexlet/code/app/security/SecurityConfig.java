@@ -20,6 +20,8 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import java.util.List;
+
+import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -37,33 +39,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final List<GrantedAuthority> DEFAULT_AUTHORITIES = List.of(new SimpleGrantedAuthority("USER"));
 
-    //Note: Сейчас разрешены:
-    // - GET('/api/users')
-    // - POST('/api/users')
-    // - POST('/api/login')
-    // - все запросы НЕ начинающиеся на '/api'
     private final RequestMatcher publicUrls;
     private final RequestMatcher loginRequest;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTHelper jwtHelper;
 
-
+    // - POST('/api/login')
+    // - POST('/api/users')
+    // - GET('/api/users')
+    // - all urls without '/api' in the beginning
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
                           final UserDetailsService userDetailsServiceValue,
                           final PasswordEncoder passwordEncoderValue, final JWTHelper jwtHelperValue) {
         this.loginRequest = new AntPathRequestMatcher(baseUrl + LOGIN, POST.toString());
         this.publicUrls = new OrRequestMatcher(
                 loginRequest,
-                new AntPathRequestMatcher(baseUrl + "/users", POST.toString()),
-                new AntPathRequestMatcher(baseUrl + "/users", GET.toString()),
+                new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, POST.toString()),
+                new AntPathRequestMatcher(baseUrl + USER_CONTROLLER_PATH, GET.toString()),
                 new NegatedRequestMatcher(new AntPathRequestMatcher(baseUrl + "/**"))
         );
         this.userDetailsService = userDetailsServiceValue;
         this.passwordEncoder = passwordEncoderValue;
         this.jwtHelper = jwtHelperValue;
     }
-
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -87,7 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers(publicUrls).permitAll().anyRequest().authenticated()
+                .requestMatchers(publicUrls).permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .addFilter(authenticationFilter)
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -95,5 +95,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable();
+
+        http.headers().frameOptions().disable();
+
     }
+
 }
