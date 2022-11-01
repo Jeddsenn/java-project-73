@@ -2,10 +2,12 @@ base-url: "/api"
 
 spring:
   application:
-    name: taskManager.db
+    name: taskManager
 
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: create-drop
 
   liquibase:
     enabled: true
@@ -15,6 +17,7 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
 
 logging:
   level:
