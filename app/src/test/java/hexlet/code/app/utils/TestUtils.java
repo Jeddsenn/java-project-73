@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class TestUtils {
     public static final String BASE_URL = "/api";
     public static final String TEST_USERNAME = "email@email.com";
+    public static final String TEST_USERNAME1 = "email1@email.com";
 
     private final UserDto testRegistrationDto = new UserDto(
             TEST_USERNAME,
@@ -44,6 +45,10 @@ public class TestUtils {
         userRepository.deleteAll();
     }
 
+
+    public UserDto getTestRegistrationDto() {
+        return testRegistrationDto;
+    }
 
     public ResultActions regDefaultUser() throws Exception {
         return regUser(testRegistrationDto);
@@ -77,5 +82,6 @@ public class TestUtils {
     public static <T> T fromJson(final String json, final TypeReference<T> to) throws JsonProcessingException {
         return MAPPER.readValue(json, to);
     }
+
 
 }
