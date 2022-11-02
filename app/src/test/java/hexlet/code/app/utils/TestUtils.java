@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.component.JWTHelper;
+import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.dto.UserDto;
+import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
@@ -15,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import java.util.Map;
+import java.util.Set;
 
+import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -50,12 +54,17 @@ public class TestUtils {
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
+
+    @Autowired
+    private TaskStatusRepository taskRepository;
+
     @Autowired
     private JWTHelper jwtHelper;
 
     public void tearDown() {
         userRepository.deleteAll();
         taskStatusRepository.deleteAll();
+        taskRepository.deleteAll();
     }
 
 
@@ -90,6 +99,30 @@ public class TestUtils {
 
         return perform(request, byUser);
     }
+
+    public ResultActions regDefaultTask(final String byUser) throws Exception {
+        regDefaultUser();
+        regDefaultStatus(TEST_USERNAME);
+        final User user = userRepository.findAll().get(0);
+        final TaskStatus taskStatus = taskStatusRepository.findAll().get(0);
+        final TaskDto testRegTaskDto = new TaskDto(
+                "task",
+                "description",
+                taskStatus.getId(),
+                user.getId()
+        );
+        return regTask(testRegTaskDto, byUser);
+    }
+
+    public ResultActions regTask(final TaskDto dto, final String byUser) throws Exception {
+        final var request = post(BASE_URL + TASK_CONTROLLER_PATH)
+                .content(asJson(dto))
+                .contentType(APPLICATION_JSON);
+
+        return perform(request, byUser);
+    }
+
+
 
 
 
