@@ -8,10 +8,12 @@ import hexlet.code.app.service.TaskStatusService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
+import static org.springframework.http.HttpStatus.CREATED;
 
 
 @AllArgsConstructor
@@ -39,13 +41,15 @@ public class TaskStatusController {
                 .toList();
     }
 
+    @ResponseStatus(CREATED)
     @PostMapping("")
-    public TaskStatus createStatus(TaskStatusDto dto){
+    public TaskStatus createStatus(@RequestBody TaskStatusDto dto){
         return taskStatusService.createTaskStatus(dto);
     }
 
     @PutMapping(ID)
-    public TaskStatus updateStatus(TaskStatusDto dto, @PathVariable long id){
+    public TaskStatus updateStatus(@RequestBody @Valid TaskStatusDto dto,
+                                   @PathVariable long id){
         return taskStatusService.updateTaskStatus(dto, id);
     }
 
