@@ -6,7 +6,6 @@ import hexlet.code.app.config.SpringConfigForIT;
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
-import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,13 +20,21 @@ import java.util.List;
 
 import static hexlet.code.app.controller.TaskStatusController.ID;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
-import static hexlet.code.app.utils.TestUtils.*;
+import static hexlet.code.app.utils.TestUtils.BASE_URL;
+import static hexlet.code.app.utils.TestUtils.TEST_STATUS_NAME;
+import static hexlet.code.app.utils.TestUtils.TEST_STATUS_NAME1;
+import static hexlet.code.app.utils.TestUtils.TEST_USERNAME;
+import static hexlet.code.app.utils.TestUtils.TEST_USERNAME1;
+import static hexlet.code.app.utils.TestUtils.asJson;
+import static hexlet.code.app.utils.TestUtils.fromJson;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -39,10 +46,6 @@ public class TaskStatusControllerIT {
 
     @Autowired
     private TaskStatusRepository taskStatusRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
 
     @Autowired
     private TestUtils utils;
@@ -127,7 +130,7 @@ public class TaskStatusControllerIT {
         utils.perform(updateRequest, TEST_USERNAME1).andExpect(status().isOk());
 
         assertTrue(taskStatusRepository.existsById(statusID));
-        assertNull(taskStatusRepository.findByName(TEST_USERNAME).orElse(null));
-        assertNotNull(taskStatusRepository.findByName(TEST_USERNAME1).orElse(null));
+        assertTrue(taskStatusRepository.findByName(TEST_STATUS_NAME).isEmpty());
+        assertTrue(taskStatusRepository.findByName(TEST_STATUS_NAME1).isPresent());
     }
 }

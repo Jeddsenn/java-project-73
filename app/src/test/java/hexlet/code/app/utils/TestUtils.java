@@ -9,6 +9,7 @@ import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
+import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,17 +55,16 @@ public class TestUtils {
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
-
     @Autowired
-    private TaskStatusRepository taskRepository;
+    private TaskRepository taskRepository;
 
     @Autowired
     private JWTHelper jwtHelper;
 
     public void tearDown() {
-        userRepository.deleteAll();
-        taskStatusRepository.deleteAll();
         taskRepository.deleteAll();
+        taskStatusRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
 
