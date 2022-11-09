@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.app.config.SpringConfigForIT;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.model.Task;
-import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.repository.TaskRepository;
-import hexlet.code.app.service.TaskService;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,18 +15,23 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.List;
-
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskStatusController.ID;
-import static hexlet.code.app.utils.TestUtils.*;
+import static hexlet.code.app.utils.TestUtils.BASE_URL;
+import static hexlet.code.app.utils.TestUtils.TEST_USERNAME;
+import static hexlet.code.app.utils.TestUtils.asJson;
+import static hexlet.code.app.utils.TestUtils.fromJson;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc

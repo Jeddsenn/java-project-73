@@ -20,8 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import java.util.Map;
-import java.util.Set;
-
 import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
@@ -44,8 +42,8 @@ public class TestUtils {
             "lname",
             "pwd"
     );
-    public static final LabelDto labelDto = new LabelDto("label1");
-    public static final LabelDto labelDto2 = new LabelDto("label2");
+    public static final LabelDto LABEL_DTO = new LabelDto("label1");
+    public static final LabelDto LABEL_DTO_2 = new LabelDto("label2");
 
     private final TaskStatusDto testStatusDto = new TaskStatusDto(
             TEST_STATUS_NAME
@@ -64,7 +62,7 @@ public class TestUtils {
     private TaskRepository taskRepository;
 
     @Autowired
-    LabelRepository labelRepository;
+    private LabelRepository labelRepository;
     @Autowired
     private JWTHelper jwtHelper;
 
@@ -131,7 +129,7 @@ public class TestUtils {
     }
 
     public ResultActions regDefaultLabel(final String byUser) throws Exception {
-        return regLabel(labelDto, byUser);
+        return regLabel(LABEL_DTO, byUser);
     }
 
     public ResultActions regLabel(final LabelDto labelDto, final String byUser) throws  Exception {
@@ -140,10 +138,6 @@ public class TestUtils {
                 .contentType(APPLICATION_JSON);
         return perform(request, byUser);
     }
-
-
-
-
 
     public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
         final String token = jwtHelper.expiring(Map.of("username", byUser));
@@ -165,6 +159,4 @@ public class TestUtils {
     public static <T> T fromJson(final String json, final TypeReference<T> to) throws JsonProcessingException {
         return MAPPER.readValue(json, to);
     }
-
-
 }

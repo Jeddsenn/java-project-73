@@ -5,7 +5,6 @@ import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.security.SecurityConfig;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

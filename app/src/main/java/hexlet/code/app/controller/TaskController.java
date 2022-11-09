@@ -28,8 +28,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("${base-url}" + TASK_CONTROLLER_PATH)
 public class TaskController {
-    TaskRepository taskRepository;
-    TaskService taskService;
+    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     public static final String TASK_CONTROLLER_PATH = "/tasks";
     public static final String ID = "/{id}";
@@ -39,7 +39,7 @@ public class TaskController {
 
 
     @GetMapping(ID)
-    public Task getTask(@PathVariable long id){
+    public Task getTask(@PathVariable long id) {
         return taskRepository.findById(id).get();
     }
 
@@ -50,19 +50,19 @@ public class TaskController {
 
     @PostMapping("")
     @ResponseStatus(CREATED)
-    public Task createTask(@RequestBody TaskDto taskDto){
+    public Task createTask(@RequestBody TaskDto taskDto) {
         return taskService.createNewTask(taskDto);
     }
 
     @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping(ID)
-    public Task updateTask(@RequestBody TaskDto taskDto, @PathVariable long id){
+    public Task updateTask(@RequestBody TaskDto taskDto, @PathVariable long id) {
         return taskService.updateTask(taskDto, id);
     }
 
     @PreAuthorize(ONLY_TASK_OWNER)
     @DeleteMapping(ID)
-    public void deleteTask(@PathVariable long id){
+    public void deleteTask(@PathVariable long id) {
         taskRepository.deleteById(id);
     }
 }

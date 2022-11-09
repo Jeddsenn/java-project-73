@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class TaskStatusServiceImpl implements TaskStatusService{
+public class TaskStatusServiceImpl implements TaskStatusService {
     private TaskStatusRepository taskStatusRepository;
 
     @Override

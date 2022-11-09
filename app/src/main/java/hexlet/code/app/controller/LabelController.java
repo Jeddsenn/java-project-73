@@ -35,29 +35,29 @@ public class LabelController {
 
 
     @GetMapping(ID)
-    public Label getLabel(@PathVariable long id){
+    public Label getLabel(@PathVariable long id) {
         return labelRepository.findById(id).get();
     }
 
     @GetMapping("")
-    public List<Label> getAll(){
+    public List<Label> getAll() {
         return labelRepository.findAll();
     }
 
 
     @ResponseStatus(CREATED)
     @PostMapping("")
-    public Label createLabel(@RequestBody LabelDto labelDto){
+    public Label createLabel(@RequestBody LabelDto labelDto) {
         return labelService.createLabel(labelDto);
     }
 
     @PutMapping(ID)
-    public Label updateLabel(@RequestBody LabelDto labelDto, @PathVariable long id){
+    public Label updateLabel(@RequestBody LabelDto labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
 
     @DeleteMapping(ID)
-    public void deleteLabel(@PathVariable long id){
+    public void deleteLabel(@PathVariable long id) {
         labelRepository.deleteById(id);
     }
 }

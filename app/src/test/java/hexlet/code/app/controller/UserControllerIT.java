@@ -17,17 +17,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
-
 import static hexlet.code.app.security.SecurityConfig.LOGIN;
-import static hexlet.code.app.utils.TestUtils.*;
+import static hexlet.code.app.utils.TestUtils.BASE_URL;
+import static hexlet.code.app.utils.TestUtils.TEST_USERNAME;
+import static hexlet.code.app.utils.TestUtils.TEST_USERNAME1;
+import static hexlet.code.app.utils.TestUtils.asJson;
+import static hexlet.code.app.utils.TestUtils.fromJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static hexlet.code.app.controller.UserController.ID;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
