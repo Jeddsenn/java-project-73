@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.component.JWTHelper;
+import hexlet.code.app.dto.LabelDto;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.Map;
 import java.util.Set;
 
+import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
@@ -41,6 +44,8 @@ public class TestUtils {
             "lname",
             "pwd"
     );
+    public static final LabelDto labelDto = new LabelDto("label1");
+    public static final LabelDto labelDto2 = new LabelDto("label2");
 
     private final TaskStatusDto testStatusDto = new TaskStatusDto(
             TEST_STATUS_NAME
@@ -59,11 +64,14 @@ public class TestUtils {
     private TaskRepository taskRepository;
 
     @Autowired
+    LabelRepository labelRepository;
+    @Autowired
     private JWTHelper jwtHelper;
 
     public void tearDown() {
         taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
+        labelRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -119,6 +127,17 @@ public class TestUtils {
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
 
+        return perform(request, byUser);
+    }
+
+    public ResultActions regDefaultLabel(final String byUser) throws Exception {
+        return regLabel(labelDto, byUser);
+    }
+
+    public ResultActions regLabel(final LabelDto labelDto, final String byUser) throws  Exception {
+        final var request = post(BASE_URL + LABEL_CONTROLLER_PATH)
+                .content((asJson(labelDto)))
+                .contentType(APPLICATION_JSON);
         return perform(request, byUser);
     }
 
