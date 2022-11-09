@@ -8,6 +8,7 @@ import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,10 @@ public class TaskController {
     public static final String TASK_CONTROLLER_PATH = "/tasks";
     public static final String ID = "/{id}";
 
+    private static final String ONLY_TASK_OWNER =
+            "@taskRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
+
+
     @GetMapping(ID)
     public Task getTask(@PathVariable long id){
         return taskRepository.findById(id).get();
@@ -49,11 +54,13 @@ public class TaskController {
         return taskService.createNewTask(taskDto);
     }
 
+    @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping(ID)
     public Task updateTask(@RequestBody TaskDto taskDto, @PathVariable long id){
         return taskService.updateTask(taskDto, id);
     }
 
+    @PreAuthorize(ONLY_TASK_OWNER)
     @DeleteMapping(ID)
     public void deleteTask(@PathVariable long id){
         taskRepository.deleteById(id);
