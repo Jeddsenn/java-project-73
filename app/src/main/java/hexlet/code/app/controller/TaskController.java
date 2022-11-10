@@ -6,6 +6,11 @@ import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,28 +43,40 @@ public class TaskController {
             "@taskRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
 
 
+    @Operation(summary = "Get a task by id")
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public Task getTask(@PathVariable long id) {
         return taskRepository.findById(id).get();
     }
 
+    @Operation(summary = "Get all tasks if no filtration is set." +
+            " Else Retrieves all the elements that match the conditions defined by the specified predicate ")
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+    @Content (schema =
+    @Schema (implementation = Task.class))
+    ))
     @GetMapping("")
     public List<Task> getAllTasks(@QuerydslPredicate final Predicate predicate) {
         return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
     }
 
+    @Operation(summary = "Create a new task")
+    @ApiResponses(@ApiResponse(responseCode = "201", description = "Task was created"))
     @PostMapping("")
     @ResponseStatus(CREATED)
     public Task createTask(@RequestBody TaskDto taskDto) {
         return taskService.createNewTask(taskDto);
     }
 
+    @Operation(summary = "Update a task")
     @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping(ID)
     public Task updateTask(@RequestBody TaskDto taskDto, @PathVariable long id) {
         return taskService.updateTask(taskDto, id);
     }
 
+    @Operation(summary = "Delete task")
     @PreAuthorize(ONLY_TASK_OWNER)
     @DeleteMapping(ID)
     public void deleteTask(@PathVariable long id) {
