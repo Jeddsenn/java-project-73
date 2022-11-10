@@ -50,8 +50,8 @@ public class TaskController {
         return taskRepository.findById(id).get();
     }
 
-    @Operation(summary = "Get all tasks if no filtration is set." +
-            " Else Retrieves all the elements that match the conditions defined by the specified predicate ")
+    @Operation(summary = "Get all tasks if no filtration is set."
+            + " Else Retrieves all the elements that match the conditions defined by the specified predicate ")
     @ApiResponses(@ApiResponse(responseCode = "200", content =
     @Content (schema =
     @Schema (implementation = Task.class))

@@ -56,7 +56,7 @@ public class LabelController {
 
     @Operation(summary = "Create a new label")
     @ApiResponses(@ApiResponse(responseCode = "201", content =
-    @Content( schema =
+    @Content(schema =
     @Schema (implementation = Label.class)
     )))
     @ResponseStatus(CREATED)
