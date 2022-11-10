@@ -61,13 +61,13 @@ public class LabelController {
     )))
     @ResponseStatus(CREATED)
     @PostMapping("")
-    public Label createLabel(@RequestBody @Valid LabelDto labelDto) {
+    public Label createLabel(@RequestBody LabelDto labelDto) {
         return labelService.createLabel(labelDto);
     }
 
     @Operation(summary = "Update label")
     @PutMapping(ID)
-    public Label updateLabel(@RequestBody @Valid LabelDto labelDto, @PathVariable long id) {
+    public Label updateLabel(@RequestBody LabelDto labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
     @Operation(summary = "Delete label")

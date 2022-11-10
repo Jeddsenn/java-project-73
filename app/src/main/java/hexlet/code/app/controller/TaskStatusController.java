@@ -58,7 +58,7 @@ public class TaskStatusController {
     @ApiResponse(responseCode = "201")
     @ResponseStatus(CREATED)
     @PostMapping("")
-    public TaskStatus createStatus(@RequestBody @Valid TaskStatusDto dto) {
+    public TaskStatus createStatus(@RequestBody TaskStatusDto dto) {
         return taskStatusService.createTaskStatus(dto);
     }
 
