@@ -14,10 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -64,7 +61,8 @@ class LabelConrollerIT {
         utils.regDefaultLabel(TestUtils.TEST_USERNAME);
 
         final Long labelId = labelRepository.findByName("label1").get().getId();
-        utils.perform(delete(TestUtils.BASE_URL + LABEL_CONTROLLER_PATH + ID, labelId), TestUtils.TEST_USERNAME)
+        utils.perform(delete(TestUtils.BASE_URL + LABEL_CONTROLLER_PATH + ID, labelId),
+                        TestUtils.TEST_USERNAME)
                 .andExpect(status().isOk());
         assertEquals(0, labelRepository.count());
     }
@@ -76,7 +74,8 @@ class LabelConrollerIT {
         final var expectedLabel = labelRepository.findAll().get(0);
 
         var response =
-                utils.perform(MockMvcRequestBuilders.get(TestUtils.BASE_URL + LABEL_CONTROLLER_PATH + ID, expectedLabel.getId()),
+                utils.perform(get(TestUtils.BASE_URL + LABEL_CONTROLLER_PATH + ID,
+                                                expectedLabel.getId()),
                                 TestUtils.TEST_USERNAME)
                 .andExpect(status().isOk()).andReturn().getResponse();
 
@@ -110,7 +109,8 @@ class LabelConrollerIT {
 
         final var label = labelRepository.findAll().get(0);
 
-        final var updateRequest = MockMvcRequestBuilders.put(TestUtils.BASE_URL + LABEL_CONTROLLER_PATH + ID,
+        final var updateRequest
+                = put(TestUtils.BASE_URL + LABEL_CONTROLLER_PATH + ID,
                 label.getId())
                 .content(TestUtils.asJson(TestUtils.LABEL_DTO_2))
                 .contentType(APPLICATION_JSON);
