@@ -26,7 +26,7 @@ version = '1.0-SNAPSHOT'
 sourceCompatibility = '17'
 
 application {
-	mainClass = 'hexlet.code.app.AppApplication'
+	mainClass = 'hexlet.code.AppApplication'
 }
 
 repositories {
