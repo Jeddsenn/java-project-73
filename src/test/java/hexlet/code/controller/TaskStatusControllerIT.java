@@ -15,11 +15,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.List;
-
-import static hexlet.code.controller.TaskStatusController.ID;
 import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
+import static hexlet.code.controller.UserController.ID;
 import static hexlet.code.utils.TestUtils.BASE_URL;
 import static hexlet.code.utils.TestUtils.TEST_STATUS_NAME;
 import static hexlet.code.utils.TestUtils.TEST_STATUS_NAME1;
@@ -29,6 +27,7 @@ import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -99,18 +98,16 @@ public class TaskStatusControllerIT {
     @Test
     public void getAllTaskStatuses() throws Exception {
         utils.regDefaultUser();
-        utils.regDefaultStatus(TEST_USERNAME).andExpect(status().isCreated());
-        utils.regDefaultStatus(TEST_USERNAME).andExpect(status().isCreated());
-        assertEquals(2, taskStatusRepository.count());
-
-        final var response = utils
-                .perform(get(BASE_URL + TASK_STATUS_CONTROLLER_PATH), TEST_USERNAME)
+        utils.regDefaultStatus(TEST_USERNAME);
+        final var response = utils.perform(
+                        get(BASE_URL + TASK_STATUS_CONTROLLER_PATH), TEST_USERNAME)
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
+
         final List<TaskStatus> taskStatuses = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
-        assertThat(taskStatuses).hasSize(2);
+        assertThat(taskStatuses).hasSize(1);
     }
 
     @Test
@@ -132,5 +129,39 @@ public class TaskStatusControllerIT {
         assertTrue(taskStatusRepository.existsById(statusID));
         assertTrue(taskStatusRepository.findByName(TEST_STATUS_NAME).isEmpty());
         assertTrue(taskStatusRepository.findByName(TEST_STATUS_NAME1).isPresent());
+    }
+
+    @Test
+    public void getStatusByIdFails() throws Exception {
+        utils.regDefaultUser();
+        utils.regDefaultStatus(TEST_USERNAME);
+        final TaskStatus expectedStatus = taskStatusRepository.findAll().get(0);
+
+        Exception exception = assertThrows(
+                Exception.class, () -> utils.perform(get(BASE_URL + TASK_STATUS_CONTROLLER_PATH + ID,
+                        expectedStatus.getId()))
+        );
+        String message = exception.getMessage();
+        assertTrue(message.contains("No value present"));
+    }
+
+    @Test
+    public void twiceRegTheSameStatusFail() throws Exception {
+        utils.regDefaultUser();
+        utils.regDefaultStatus(TEST_USERNAME).andExpect(status().isCreated());
+        utils.regDefaultStatus(TEST_USERNAME).andExpect(status().isUnprocessableEntity());
+
+        assertEquals(1, taskStatusRepository.count());
+    }
+
+    @Test
+    public void deleteStatusFails() throws Exception {
+        utils.regDefaultUser();
+        utils.regDefaultStatus(TEST_USERNAME);
+        final Long statusId = taskStatusRepository.findAll().get(0).getId() + 1;
+
+        utils.perform(delete(BASE_URL + TASK_STATUS_CONTROLLER_PATH + ID, statusId), TEST_USERNAME)
+                .andExpect(status().isInternalServerError());
+        assertEquals(1, taskStatusRepository.count());
     }
 }

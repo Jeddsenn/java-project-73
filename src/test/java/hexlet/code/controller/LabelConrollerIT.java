@@ -16,9 +16,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+
+import static hexlet.code.utils.TestUtils.BASE_URL;
+import static hexlet.code.utils.TestUtils.TEST_USERNAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -120,7 +124,38 @@ class LabelConrollerIT {
 
         assertTrue(labelRepository.existsById(label.getId()));
         assertNotNull(labelRepository.findByName(TestUtils.LABEL_DTO_2.getName()).orElse(null));
-        assertNull(labelRepository.findByName(TestUtils.LABEL_DTO.getName()).orElse(null));
+        assertNull(labelRepository.findByName(TestUtils.LABEL_DTO_1.getName()).orElse(null));
     }
 
+    @Test
+    public void getLabelByIdFails() throws Exception {
+        utils.regDefaultUser();
+        utils.regDefaultLabel(TEST_USERNAME);
+        final Label expectedLabel = labelRepository.findAll().get(0);
+        Exception exception = assertThrows(
+                Exception.class, () -> utils.perform(get(BASE_URL + LABEL_CONTROLLER_PATH + ID,
+                        expectedLabel.getId()))
+        );
+        String message = exception.getMessage();
+        assertTrue(message.contains("No value present"));
+    }
+
+    @Test
+    public void regSameLabelTwice() throws Exception {
+        utils.regDefaultUser();
+        utils.regDefaultLabel(TEST_USERNAME).andExpect(status().isCreated());
+        utils.regDefaultLabel(TEST_USERNAME).andExpect(status().isUnprocessableEntity());
+
+        assertEquals(1, labelRepository.count());
+    }
+
+    @Test
+    public void deleteLabelFails() throws Exception {
+        utils.regDefaultUser();
+        utils.regDefaultLabel(TEST_USERNAME);
+        final Long labelId = labelRepository.findAll().get(0).getId() + 1;
+        utils.perform(delete(BASE_URL + LABEL_CONTROLLER_PATH + ID, labelId), TEST_USERNAME)
+                .andExpect(status().isInternalServerError());
+        assertEquals(1, labelRepository.count());
+    }
 }

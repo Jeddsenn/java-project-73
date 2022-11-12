@@ -9,7 +9,6 @@ import hexlet.code.security.SecurityConfig;
 import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,17 +77,6 @@ public final class UserControllerIT {
         assertEquals(expectedUser.getEmail(), user.getEmail());
         assertEquals(expectedUser.getFirstName(), user.getFirstName());
         assertEquals(expectedUser.getLastName(), user.getLastName());
-    }
-
-    @Disabled("For now active only positive tests")
-    @Test
-    public void getUserByIdFails() throws Exception {
-        utils.regDefaultUser();
-        final User expectedUser = userRepository.findAll().get(0);
-        utils.perform(MockMvcRequestBuilders
-                        .get(BASE_URL + UserController.USER_CONTROLLER_PATH + UserController.ID,
-                                expectedUser.getId()))
-                .andExpect(status().isUnauthorized());
     }
 
     @Test

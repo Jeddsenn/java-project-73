@@ -9,6 +9,7 @@ import hexlet.code.controller.TaskController;
 import hexlet.code.controller.UserController;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.dto.UserDto;
+import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Map;
+import java.util.Set;
 
 import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -36,8 +38,10 @@ public class TestUtils {
     public static final String BASE_URL = "/api";
     public static final String TEST_USERNAME = "email@email.com";
     public static final String TEST_USERNAME1 = "email1@email.com";
-    public static final String TEST_STATUS_NAME = "CREATED";
-    public static final String TEST_STATUS_NAME1 = "CREATEDTWICE";
+    public static final String TEST_STATUS_NAME = "STATUSCREATED";
+    public static final String TEST_STATUS_NAME1 = "STATUSCREATEDTWICE";
+    public static final String TEST_LABELNAME_1 = "label1";
+    public static final String TEST_LABELNAME_2 = "label2";
 
     private final UserDto testRegistrationDto = new UserDto(
             TEST_USERNAME,
@@ -45,8 +49,8 @@ public class TestUtils {
             "lname",
             "pwd"
     );
-    public static final LabelDto LABEL_DTO = new LabelDto("label1");
-    public static final LabelDto LABEL_DTO_2 = new LabelDto("label2");
+    public static final LabelDto LABEL_DTO_1 = new LabelDto(TEST_LABELNAME_1);
+    public static final LabelDto LABEL_DTO_2 = new LabelDto(TEST_LABELNAME_2);
 
     private final TaskStatusDto testStatusDto = new TaskStatusDto(
             TEST_STATUS_NAME
@@ -111,14 +115,17 @@ public class TestUtils {
 
     public ResultActions regDefaultTask(final String byUser) throws Exception {
         regDefaultUser();
+        regDefaultLabel(TEST_USERNAME);
         regDefaultStatus(TEST_USERNAME);
         final User user = userRepository.findAll().get(0);
         final TaskStatus taskStatus = taskStatusRepository.findAll().get(0);
+        final Label label = labelRepository.findAll().get(0);
         final TaskDto testRegTaskDto = new TaskDto(
                 "task",
                 "description",
                 taskStatus.getId(),
-                user.getId()
+                user.getId(),
+                Set.of(label.getId())
         );
         return regTask(testRegTaskDto, byUser);
     }
@@ -132,11 +139,12 @@ public class TestUtils {
     }
 
     public ResultActions regDefaultLabel(final String byUser) throws Exception {
-        return regLabel(LABEL_DTO, byUser);
+        return regLabel(LABEL_DTO_1, byUser);
     }
 
     public ResultActions regLabel(final LabelDto labelDto, final String byUser) throws  Exception {
-        final var request = MockMvcRequestBuilders.post(BASE_URL + LabelController.LABEL_CONTROLLER_PATH)
+        final var request
+                = MockMvcRequestBuilders.post(BASE_URL + LabelController.LABEL_CONTROLLER_PATH)
                 .content((asJson(labelDto)))
                 .contentType(APPLICATION_JSON);
         return perform(request, byUser);
