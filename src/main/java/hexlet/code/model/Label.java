@@ -41,4 +41,7 @@ public class Label {
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
+    public Label(Long id) {
+        this.id = id;
+    }
 }
