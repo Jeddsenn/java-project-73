@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 
 @Data
@@ -28,4 +29,6 @@ public class TaskDto {
     private Long taskStatusId;
 
     private Long executorId;
+
+    private Set<Long> labelIds;
 }

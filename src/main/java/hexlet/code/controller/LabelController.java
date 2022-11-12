@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
@@ -60,13 +61,13 @@ public class LabelController {
     )))
     @ResponseStatus(CREATED)
     @PostMapping("")
-    public Label createLabel(@RequestBody LabelDto labelDto) {
+    public Label createLabel(@RequestBody @Valid LabelDto labelDto) {
         return labelService.createLabel(labelDto);
     }
 
     @Operation(summary = "Update label")
     @PutMapping(ID)
-    public Label updateLabel(@RequestBody LabelDto labelDto, @PathVariable long id) {
+    public Label updateLabel(@RequestBody @Valid LabelDto labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
     @Operation(summary = "Delete label")

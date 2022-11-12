@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -65,14 +66,14 @@ public class TaskController {
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Task was created"))
     @PostMapping("")
     @ResponseStatus(CREATED)
-    public Task createTask(@RequestBody TaskDto taskDto) {
+    public Task createTask(@RequestBody @Valid TaskDto taskDto) {
         return taskService.createNewTask(taskDto);
     }
 
     @Operation(summary = "Update a task")
     @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping(ID)
-    public Task updateTask(@RequestBody TaskDto taskDto, @PathVariable long id) {
+    public Task updateTask(@RequestBody @Valid TaskDto taskDto, @PathVariable long id) {
         return taskService.updateTask(taskDto, id);
     }
 
