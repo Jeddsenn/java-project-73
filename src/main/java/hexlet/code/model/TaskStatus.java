@@ -26,7 +26,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 public class TaskStatus {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
