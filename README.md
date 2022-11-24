@@ -9,13 +9,13 @@ Technologies used:
 
 Spring Boot
 
-Spring Security
+Authentication with Spring Security + JWT
 
 Spring Data JPA
 
 Liquibase
 
-Swagger
+Open API documentation generated with Swagger
 
 Open Api documentation
 https://java-project-73-production-eeeb.up.railway.app/swagger-ui
