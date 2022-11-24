@@ -7,4 +7,4 @@
 [![Actions Status](https://github.com/Jeddsenn/java-project-73/workflows/hexlet-check/badge.svg)](https://github.com/Jeddsenn/java-project-73/actions)
 
 
-https://java-project-73-production-eeeb.up.railway.app/
+https://java-project-73-production-eeeb.up.railway.app/users
