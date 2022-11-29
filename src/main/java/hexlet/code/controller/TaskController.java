@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -45,7 +44,10 @@ public class TaskController {
 
 
     @Operation(summary = "Get a task by id")
-    @ApiResponses(@ApiResponse(responseCode = "200"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task was found"),
+            @ApiResponse(responseCode = "404", description = "Task with this id wasn`t found")
+    })
     @GetMapping(ID)
     public Task getTask(@PathVariable long id) {
         return taskRepository.findById(id).get();
@@ -55,22 +57,26 @@ public class TaskController {
             + " Else Retrieves all the elements that match the conditions defined by the specified predicate ")
     @ApiResponses(@ApiResponse(responseCode = "200", content =
     @Content (schema =
-    @Schema (implementation = Task.class))
+        @Schema (implementation = Task.class))
     ))
-    @GetMapping("")
-    public List<Task> getAllTasks(@QuerydslPredicate final Predicate predicate) {
+    @GetMapping
+    public Iterable<Task> getAllTasks(@QuerydslPredicate final Predicate predicate) {
         return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
     }
 
     @Operation(summary = "Create a new task")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Task was created"))
-    @PostMapping("")
+    @PostMapping
     @ResponseStatus(CREATED)
     public Task createTask(@RequestBody @Valid TaskDto taskDto) {
         return taskService.createNewTask(taskDto);
     }
 
     @Operation(summary = "Update a task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Task has been updated"),
+            @ApiResponse(responseCode = "404", description = "Task with this id wasn`t found")
+    })
     @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping(ID)
     public Task updateTask(@RequestBody @Valid TaskDto taskDto, @PathVariable long id) {
@@ -78,6 +84,10 @@ public class TaskController {
     }
 
     @Operation(summary = "Delete task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Task has been deleted"),
+            @ApiResponse(responseCode = "404", description = "Task with this id wasn`t found")
+    })
     @PreAuthorize(ONLY_TASK_OWNER)
     @DeleteMapping(ID)
     public void deleteTask(@PathVariable long id) {

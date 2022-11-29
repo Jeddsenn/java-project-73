@@ -47,7 +47,12 @@ public class UserController {
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;
 
+
     @Operation(summary = "Get a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User was found"),
+            @ApiResponse(responseCode = "404", description = "User with this id wasn`t found")
+    })
     @GetMapping(ID)
     public Optional<User> getUser(@PathVariable long id) throws NoSuchElementException {
         return userRepository.findById(id);
@@ -58,7 +63,7 @@ public class UserController {
     @Content(schema =
     @Schema(implementation = User.class))
     ))
-    @GetMapping("")
+    @GetMapping
     public List<User> getAll() throws Exception {
         return userRepository.findAll()
                 .stream()
@@ -68,12 +73,16 @@ public class UserController {
     @Operation(summary = "Create new user")
     @ApiResponse(responseCode = "201", description = "User created")
     @ResponseStatus(CREATED)
-    @PostMapping("")
+    @PostMapping
     public User createUser(@RequestBody @Valid UserDto userDto) {
         return userService.createNewUser(userDto);
     }
 
     @Operation(summary = "Update user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User has been updated"),
+            @ApiResponse(responseCode = "404", description = "User with this id wasn`t found")
+    })
     @PreAuthorize(ONLY_OWNER_BY_ID)
     @PutMapping(ID)
     public User updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserDto userDto) {
@@ -81,6 +90,10 @@ public class UserController {
     }
 
     @Operation(summary = "Delete a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User has been deleted"),
+            @ApiResponse(responseCode = "404", description = "User with this id wasn`t found")
+    })
     @PreAuthorize(ONLY_OWNER_BY_ID)
     @DeleteMapping(ID)
     public void deleteUser(@PathVariable long id) {

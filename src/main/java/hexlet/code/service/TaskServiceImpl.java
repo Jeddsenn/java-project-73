@@ -25,18 +25,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task createNewTask(TaskDto taskDto) {
-        final Task newTask = buildTaskFromDto(taskDto);
+        final Task newTask = fromDto(taskDto);
         return taskRepository.save(newTask);
     }
 
     @Override
     public Task updateTask(TaskDto taskDto, long id) {
-        final Task taskToUpdate = buildTaskFromDto(taskDto);
+        final Task taskToUpdate = fromDto(taskDto);
         taskToUpdate.setId(id);
         return taskRepository.save(taskToUpdate);
     }
 
-    private Task buildTaskFromDto(final TaskDto dto) {
+    private Task fromDto(final TaskDto dto) {
         final User author = userService.getCurrentUser();
         final User executor = Optional.ofNullable(dto.getExecutorId())
                 .map(User::new)

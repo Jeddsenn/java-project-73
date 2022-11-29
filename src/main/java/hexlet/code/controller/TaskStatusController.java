@@ -7,6 +7,7 @@ import hexlet.code.service.TaskStatusService;
 import hexlet.code.dto.TaskStatusDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,10 @@ public class TaskStatusController {
     public static final String ID = "/{id}";
 
     @Operation(summary = "Get a task status by id")
-    @ApiResponse(responseCode = "200")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task status was found"),
+            @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
+    })
     @GetMapping(ID)
     public Optional<TaskStatus> getTaskStatus(@PathVariable long id) {
         return taskStatusRepository.findById(id);
@@ -46,7 +50,7 @@ public class TaskStatusController {
 
     @Operation(summary = "Get all statuses")
     @ApiResponse(responseCode = "200")
-    @GetMapping("")
+    @GetMapping
     public List<TaskStatus> getAll() {
         return taskStatusRepository
                 .findAll()
@@ -57,12 +61,16 @@ public class TaskStatusController {
     @Operation(summary = "Create a new task status")
     @ApiResponse(responseCode = "201")
     @ResponseStatus(CREATED)
-    @PostMapping("")
+    @PostMapping
     public TaskStatus createStatus(@RequestBody @Valid TaskStatusDto dto) {
         return taskStatusService.createTaskStatus(dto);
     }
 
     @Operation(summary = "Update task status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Task status has been updated"),
+            @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
+    })
     @PutMapping(ID)
     public TaskStatus updateStatus(@RequestBody @Valid TaskStatusDto dto,
                                    @PathVariable long id) {
@@ -70,6 +78,10 @@ public class TaskStatusController {
     }
 
     @Operation(summary = "Delete a task status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Task status has been deleted"),
+            @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
+    })
     @DeleteMapping(ID)
     public void deleteStatus(@PathVariable long id) {
         taskStatusRepository.deleteById(id);

@@ -16,21 +16,21 @@ import static io.jsonwebtoken.impl.TextCodec.BASE64;
 @Component
 public class JWTHelper {
 
-    private static final int THOUSAND = 1000;
+    private static final int MILLIS_IN_SECOND = 1000;
     private final String secretKey;
     private final String issuer;
     private final Long expirationSec;
     private final Long clockSkewSec;
     private final Clock clock;
 
-    public JWTHelper(@Value("${jwt.issuer:meeeh}") final String issuerValue,
-                     @Value("${jwt.expiration-sec:86400}") final Long expirationSecValue,
-                     @Value("${jwt.clock-skew-sec:300}") final Long clockSkewSecValue,
+    public JWTHelper(@Value("${jwt.issuer:meeeh}") final String issuer,
+                     @Value("${jwt.expiration-sec:86400}") final Long expirationSec,
+                     @Value("${jwt.clock-skew-sec:300}") final Long clockSkewSec,
                      @Value("${jwt.secret:secret}") final String secret) {
         this.secretKey = BASE64.encode(secret);
-        this.issuer = issuerValue;
-        this.expirationSec = expirationSecValue;
-        this.clockSkewSec = clockSkewSecValue;
+        this.issuer = issuer;
+        this.expirationSec = expirationSec;
+        this.clockSkewSec = clockSkewSec;
         this.clock = DefaultClock.INSTANCE;
     }
 
@@ -57,7 +57,7 @@ public class JWTHelper {
         claims.setIssuedAt(clock.now());
         claims.putAll(attributes);
         if (expiresInSec > 0) {
-            claims.setExpiration(new Date(System.currentTimeMillis() + expiresInSec * THOUSAND));
+            claims.setExpiration(new Date(System.currentTimeMillis() + expiresInSec * MILLIS_IN_SECOND));
         }
         return claims;
     }

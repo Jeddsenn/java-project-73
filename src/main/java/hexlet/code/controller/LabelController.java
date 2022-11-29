@@ -40,7 +40,10 @@ public class LabelController {
     private final LabelService labelService;
 
     @Operation(summary = "Get a label by id")
-    @ApiResponse(responseCode = "200")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Label was found"),
+            @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
+    })
     @GetMapping(ID)
     public Label getLabel(@PathVariable long id) {
         return labelRepository.findById(id).get();
@@ -48,7 +51,7 @@ public class LabelController {
 
     @Operation(summary = "Get all labels")
     @ApiResponses(@ApiResponse (responseCode = "200"))
-    @GetMapping("")
+    @GetMapping
     public List<Label> getAll() {
         return labelRepository.
                 findAll();
@@ -60,17 +63,25 @@ public class LabelController {
     @Schema (implementation = Label.class)
     )))
     @ResponseStatus(CREATED)
-    @PostMapping("")
+    @PostMapping
     public Label createLabel(@RequestBody @Valid LabelDto labelDto) {
         return labelService.createLabel(labelDto);
     }
 
     @Operation(summary = "Update label")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Label has been updated"),
+            @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
+    })
     @PutMapping(ID)
     public Label updateLabel(@RequestBody @Valid LabelDto labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
     @Operation(summary = "Delete label")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Label has been deleted"),
+            @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
+    })
     @DeleteMapping(ID)
     public void deleteLabel(@PathVariable long id) {
         labelRepository.deleteById(id);
