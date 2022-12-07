@@ -1,7 +1,7 @@
 package hexlet.code.filter;
 
 import hexlet.code.component.JWTHelper;
-import hexlet.code.config.security.SecurityConfig;
+import hexlet.code.config.SecurityConfig;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.RequestMatcher;

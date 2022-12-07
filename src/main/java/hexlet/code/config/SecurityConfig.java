@@ -1,4 +1,4 @@
-package hexlet.code.config.security;
+package hexlet.code.config;
 
 import hexlet.code.component.JWTHelper;
 import hexlet.code.controller.UserController;

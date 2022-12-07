@@ -5,7 +5,7 @@ import hexlet.code.dto.LoginDto;
 import hexlet.code.dto.UserDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.config.security.SecurityConfig;
+import hexlet.code.config.SecurityConfig;
 import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;

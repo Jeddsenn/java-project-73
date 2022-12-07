@@ -2,7 +2,7 @@ package hexlet.code.service;
 
 import hexlet.code.dto.UserDto;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.config.security.SecurityConfig;
+import hexlet.code.config.SecurityConfig;
 import hexlet.code.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
