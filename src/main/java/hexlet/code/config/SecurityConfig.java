@@ -1,6 +1,5 @@
 package hexlet.code.config;
 
-import hexlet.code.component.JWTHelper;
 import hexlet.code.controller.UserController;
 import hexlet.code.filter.JWTAuthenticationFilter;
 import hexlet.code.filter.JWTAuthorizationFilter;

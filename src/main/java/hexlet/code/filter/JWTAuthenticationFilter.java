@@ -1,7 +1,7 @@
 package hexlet.code.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.component.JWTHelper;
+import hexlet.code.config.JWTHelper;
 import hexlet.code.dto.LoginDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

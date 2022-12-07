@@ -3,7 +3,7 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.component.JWTHelper;
+import hexlet.code.config.JWTHelper;
 import hexlet.code.controller.LabelController;
 import hexlet.code.controller.TaskController;
 import hexlet.code.controller.UserController;
