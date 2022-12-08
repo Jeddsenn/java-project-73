@@ -2,7 +2,7 @@ package hexlet.code.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.config.SpringConfigForIT;
-import hexlet.code.model.Label;
+import hexlet.code.model.LabelEntity;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
@@ -80,7 +80,7 @@ class LabelConrollerIT {
                                 TestUtils.TEST_USERNAME)
                 .andExpect(status().isOk()).andReturn().getResponse();
 
-        final Label label = TestUtils.fromJson(response.getContentAsString(), new TypeReference<>() {
+        final LabelEntity label = TestUtils.fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
 
@@ -97,7 +97,7 @@ class LabelConrollerIT {
                 utils.perform(get(TestUtils.BASE_URL + LABEL_CONTROLLER_PATH), TestUtils.TEST_USERNAME)
                 .andExpect(status().isOk()).andReturn().getResponse();
 
-        List<Label> list = TestUtils.fromJson(response.getContentAsString(), new TypeReference<>() {
+        List<LabelEntity> list = TestUtils.fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         assertEquals(2, list.size());
 
@@ -119,15 +119,15 @@ class LabelConrollerIT {
         utils.perform(updateRequest, TestUtils.TEST_USERNAME);
 
         assertTrue(labelRepository.existsById(label.getId()));
-        assertNotNull(labelRepository.findByName(TestUtils.LABEL_DTO_2.getName()).orElse(null));
-        assertNull(labelRepository.findByName(TestUtils.LABEL_DTO_1.getName()).orElse(null));
+        assertNotNull(labelRepository.findByName(TestUtils.LABEL_DTO_2.name()).orElse(null));
+        assertNull(labelRepository.findByName(TestUtils.LABEL_DTO_1.name()).orElse(null));
     }
 
     @Test
     public void getLabelByIdFails() throws Exception {
         utils.regDefaultUser();
         utils.regDefaultLabel(TEST_USERNAME);
-        final Label expectedLabel = labelRepository.findAll().get(0);
+        final LabelEntity expectedLabel = labelRepository.findAll().get(0);
         Exception exception = assertThrows(
                 Exception.class, () -> utils.perform(get(BASE_URL + LABEL_CONTROLLER_PATH + ID,
                         expectedLabel.getId()))

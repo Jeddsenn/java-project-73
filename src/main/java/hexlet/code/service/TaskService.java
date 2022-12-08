@@ -2,11 +2,11 @@ package hexlet.code.service;
 
 
 import hexlet.code.dto.TaskDto;
-import hexlet.code.model.Task;
+import hexlet.code.model.TaskEntity;
 
 public interface TaskService {
 
-    Task createNewTask(TaskDto taskDto);
+    TaskEntity createNewTask(TaskDto taskDto);
 
-    Task updateTask(TaskDto taskDto, long id);
+    TaskEntity updateTask(TaskDto taskDto, long id);
 }

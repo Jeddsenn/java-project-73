@@ -27,7 +27,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Table(name = "labels")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Label {
+public class LabelEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class Label {
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
-    public Label(Long id) {
+    public LabelEntity(Long id) {
         this.id = id;
     }
 }

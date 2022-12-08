@@ -3,7 +3,7 @@ package hexlet.code.controller;
 
 import com.querydsl.core.types.Predicate;
 import hexlet.code.dto.TaskDto;
-import hexlet.code.model.Task;
+import hexlet.code.model.TaskEntity;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +43,7 @@ public class TaskController {
             @ApiResponse(responseCode = "404", description = "Task with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public Task getTask(@PathVariable long id) {
+    public TaskEntity getTask(@PathVariable long id) {
         return taskRepository.findById(id).get();
     }
 
@@ -51,7 +51,7 @@ public class TaskController {
             + " Else Retrieves all the elements that match the conditions defined by the specified predicate ")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping
-    public Iterable<Task> getAllTasks(@QuerydslPredicate final Predicate predicate) {
+    public Iterable<TaskEntity> getAllTasks(@QuerydslPredicate final Predicate predicate) {
         return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
     }
 
@@ -59,7 +59,7 @@ public class TaskController {
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Task was created"))
     @PostMapping
     @ResponseStatus(CREATED)
-    public Task createTask(@RequestBody @Valid TaskDto taskDto) {
+    public TaskEntity createTask(@RequestBody @Valid TaskDto taskDto) {
         return taskService.createNewTask(taskDto);
     }
 
@@ -70,7 +70,7 @@ public class TaskController {
     })
     @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping("/{id}")
-    public Task updateTask(@RequestBody @Valid TaskDto taskDto, @PathVariable long id) {
+    public TaskEntity updateTask(@RequestBody @Valid TaskDto taskDto, @PathVariable long id) {
         return taskService.updateTask(taskDto, id);
     }
 

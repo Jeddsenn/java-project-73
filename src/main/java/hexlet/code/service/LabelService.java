@@ -1,10 +1,10 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.LabelDto;
-import hexlet.code.model.Label;
+import hexlet.code.model.LabelEntity;
 
 public interface LabelService {
 
-    Label createLabel(LabelDto labelDto);
-    Label updateLabel(LabelDto labelDto, long id);
+    LabelEntity createLabel(LabelDto labelDto);
+    LabelEntity updateLabel(LabelDto labelDto, long id);
 }

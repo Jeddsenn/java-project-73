@@ -4,7 +4,7 @@ package hexlet.code.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.dto.TaskDto;
-import hexlet.code.model.Task;
+import hexlet.code.model.TaskEntity;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,7 +84,7 @@ public class TaskControllerIT {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final Task task = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final TaskEntity task = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expectedTask.getId(), task.getId());
@@ -102,7 +102,7 @@ public class TaskControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<Task> tasks = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<TaskEntity> tasks = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(tasks).hasSize(1);
     }
@@ -110,7 +110,7 @@ public class TaskControllerIT {
     @Test
     public void updateTask() throws Exception {
         utils.regDefaultTask(TEST_USERNAME);
-        Task task = taskRepository.findAll().get(0);
+        TaskEntity task = taskRepository.findAll().get(0);
         final Long taskId = task.getId();
         final var newTaskDto = new TaskDto(
                 "newTask",
@@ -129,13 +129,13 @@ public class TaskControllerIT {
         utils.perform(updateRequest, TEST_USERNAME).andExpect(status().isOk());
         assertTrue(taskRepository.existsById(taskId));
         assertNull(taskRepository.findByName(task.getName()).orElse(null));
-        assertNotNull(taskRepository.findByName(newTaskDto.getName()).orElse(null));
+        assertNotNull(taskRepository.findByName(newTaskDto.name()).orElse(null));
     }
 
     @Test
     public void getTaskByIdFails() throws Exception {
         utils.regDefaultTask(TEST_USERNAME);
-        final Task expectedTask = taskRepository.findAll().get(0);
+        final TaskEntity expectedTask = taskRepository.findAll().get(0);
         Exception exception = assertThrows(
                 Exception.class, () -> utils.perform(get(BASE_URL + TASK_CONTROLLER_PATH + ID,
                         expectedTask.getId()))

@@ -2,10 +2,10 @@ package hexlet.code.controller;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.dto.TaskStatusDto;
-import hexlet.code.model.TaskStatus;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,14 +81,14 @@ public class TaskStatusControllerIT {
         utils.regDefaultStatus(TEST_USERNAME).andExpect(status().isCreated());
         assertEquals(1, taskStatusRepository.count());
 
-        final TaskStatus expectedStatus = taskStatusRepository.findAll().get(0);
+        final TaskStatusEntity expectedStatus = taskStatusRepository.findAll().get(0);
 
         final var response = utils
                 .perform(get(BASE_URL + TASK_STATUS_CONTROLLER_PATH + ID, expectedStatus.getId()), TEST_USERNAME)
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final TaskStatus status = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final TaskStatusEntity status = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expectedStatus.getId(), status.getId());
@@ -105,7 +105,7 @@ public class TaskStatusControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<TaskStatus> taskStatuses = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<TaskStatusEntity> taskStatuses = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(taskStatuses).hasSize(1);
     }
@@ -135,7 +135,7 @@ public class TaskStatusControllerIT {
     public void getStatusByIdFails() throws Exception {
         utils.regDefaultUser();
         utils.regDefaultStatus(TEST_USERNAME);
-        final TaskStatus expectedStatus = taskStatusRepository.findAll().get(0);
+        final TaskStatusEntity expectedStatus = taskStatusRepository.findAll().get(0);
 
         Exception exception = assertThrows(
                 Exception.class, () -> utils.perform(get(BASE_URL + TASK_STATUS_CONTROLLER_PATH + ID,

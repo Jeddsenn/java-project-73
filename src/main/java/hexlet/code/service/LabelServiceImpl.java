@@ -1,7 +1,7 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.LabelDto;
-import hexlet.code.model.Label;
+import hexlet.code.model.LabelEntity;
 import hexlet.code.repository.LabelRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,16 @@ public class LabelServiceImpl implements LabelService {
     private LabelRepository labelRepository;
 
     @Override
-    public Label createLabel(final LabelDto labelDto) {
-        Label newLabel = new Label();
-        newLabel.setName(labelDto.getName());
+    public LabelEntity createLabel(final LabelDto labelDto) {
+        LabelEntity newLabel = new LabelEntity();
+        newLabel.setName(labelDto.name());
         return labelRepository.save(newLabel);
     }
 
     @Override
-    public Label updateLabel(final LabelDto labelDto, final long id) {
-        Label label = labelRepository.findById(id).get();
-        label.setName(labelDto.getName());
+    public LabelEntity updateLabel(final LabelDto labelDto, final long id) {
+        LabelEntity label = labelRepository.findById(id).get();
+        label.setName(labelDto.name());
         return labelRepository.save(label);
     }
 }

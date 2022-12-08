@@ -2,12 +2,10 @@ package hexlet.code.controller;
 
 
 import hexlet.code.dto.LabelDto;
-import hexlet.code.model.Label;
+import hexlet.code.model.LabelEntity;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
@@ -40,14 +38,14 @@ public class LabelController {
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public Label getLabel(@PathVariable long id) {
+    public LabelEntity getLabel(@PathVariable long id) {
         return labelRepository.findById(id).get();
     }
 
     @Operation(summary = "Get all labels")
     @ApiResponses(@ApiResponse (responseCode = "200"))
     @GetMapping
-    public List<Label> getAll() {
+    public List<LabelEntity> getAll() {
         return labelRepository.
                 findAll();
     }
@@ -56,7 +54,7 @@ public class LabelController {
     @ApiResponses(@ApiResponse(responseCode = "201"))
     @ResponseStatus(CREATED)
     @PostMapping
-    public Label createLabel(@RequestBody @Valid LabelDto labelDto) {
+    public LabelEntity createLabel(@RequestBody @Valid LabelDto labelDto) {
         return labelService.createLabel(labelDto);
     }
 
@@ -66,7 +64,7 @@ public class LabelController {
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public Label updateLabel(@RequestBody @Valid LabelDto labelDto, @PathVariable long id) {
+    public LabelEntity updateLabel(@RequestBody @Valid LabelDto labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
     @Operation(summary = "Delete label")

@@ -3,7 +3,7 @@ package hexlet.code.controller;
 
 import hexlet.code.repository.UserRepository;
 import hexlet.code.dto.UserDto;
-import hexlet.code.model.User;
+import hexlet.code.model.UserEntity;
 import hexlet.code.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,14 +48,14 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable long id) throws NoSuchElementException {
+    public Optional<UserEntity> getUser(@PathVariable long id) throws NoSuchElementException {
         return userRepository.findById(id);
     }
 
     @Operation(summary = "Get all users")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping
-    public List<User> getAll() throws Exception {
+    public List<UserEntity> getAll() throws Exception {
         return userRepository.findAll()
                 .stream()
                 .toList();
@@ -65,7 +65,7 @@ public class UserController {
     @ApiResponse(responseCode = "201", description = "User created")
     @ResponseStatus(CREATED)
     @PostMapping
-    public User createUser(@RequestBody @Valid UserDto userDto) {
+    public UserEntity createUser(@RequestBody @Valid UserDto userDto) {
         return userService.createNewUser(userDto);
     }
 
@@ -76,7 +76,7 @@ public class UserController {
     })
     @PreAuthorize(ONLY_OWNER_BY_ID)
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserDto userDto) {
+    public UserEntity updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserDto userDto) {
         return userService.updateUser(id, userDto);
     }
 

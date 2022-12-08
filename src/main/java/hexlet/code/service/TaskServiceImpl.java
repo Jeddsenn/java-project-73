@@ -1,9 +1,9 @@
 package hexlet.code.service;
 
-import hexlet.code.model.Label;
-import hexlet.code.model.Task;
-import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
+import hexlet.code.model.LabelEntity;
+import hexlet.code.model.TaskEntity;
+import hexlet.code.model.TaskStatusEntity;
+import hexlet.code.model.UserEntity;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.repository.TaskRepository;
 import lombok.AllArgsConstructor;
@@ -24,40 +24,40 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
 
     @Override
-    public Task createNewTask(TaskDto taskDto) {
-        final Task newTask = fromDto(taskDto);
+    public TaskEntity createNewTask(TaskDto taskDto) {
+        final TaskEntity newTask = fromDto(taskDto);
         return taskRepository.save(newTask);
     }
 
     @Override
-    public Task updateTask(TaskDto taskDto, long id) {
-        final Task taskToUpdate = fromDto(taskDto);
+    public TaskEntity updateTask(TaskDto taskDto, long id) {
+        final TaskEntity taskToUpdate = fromDto(taskDto);
         taskToUpdate.setId(id);
         return taskRepository.save(taskToUpdate);
     }
 
-    private Task fromDto(final TaskDto dto) {
-        final User author = userService.getCurrentUser();
-        final User executor = Optional.ofNullable(dto.getExecutorId())
-                .map(User::new)
+    private TaskEntity fromDto(final TaskDto dto) {
+        final UserEntity author = userService.getCurrentUser();
+        final UserEntity executor = Optional.ofNullable(dto.executorId())
+                .map(UserEntity::new)
                 .orElse(null);
-        final TaskStatus taskStatus = Optional.ofNullable(dto.getTaskStatusId())
-                .map(TaskStatus::new)
+        final TaskStatusEntity taskStatus = Optional.ofNullable(dto.taskStatusId())
+                .map(TaskStatusEntity::new)
                 .orElse(null);
-        final Set<Label> labels = Optional.ofNullable(dto.getLabelIds())
+        final Set<LabelEntity> labels = Optional.ofNullable(dto.labelIds())
                 .orElse(Set.of())
                 .stream()
                 .filter(Objects::nonNull)
-                .map(Label::new)
+                .map(LabelEntity::new)
                 .collect(Collectors.toSet());
 
-        return Task.builder()
+        return TaskEntity.builder()
                 .author(author)
                 .executor(executor)
                 .taskStatus(taskStatus)
                 .labels(labels)
-                .name(dto.getName())
-                .description(dto.getDescription())
+                .name(dto.name())
+                .description(dto.description())
                 .build();
     }
 }

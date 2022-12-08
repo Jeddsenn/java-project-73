@@ -1,7 +1,7 @@
 package hexlet.code.controller;
 
 
-import hexlet.code.model.TaskStatus;
+import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
 import hexlet.code.dto.TaskStatusDto;
@@ -40,14 +40,14 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public Optional<TaskStatus> getTaskStatus(@PathVariable long id) {
+    public Optional<TaskStatusEntity> getTaskStatus(@PathVariable long id) {
         return taskStatusRepository.findById(id);
     }
 
     @Operation(summary = "Get all statuses")
     @ApiResponse(responseCode = "200")
     @GetMapping
-    public List<TaskStatus> getAll() {
+    public List<TaskStatusEntity> getAll() {
         return taskStatusRepository
                 .findAll()
                 .stream()
@@ -58,7 +58,7 @@ public class TaskStatusController {
     @ApiResponse(responseCode = "201")
     @ResponseStatus(CREATED)
     @PostMapping
-    public TaskStatus createStatus(@RequestBody @Valid TaskStatusDto dto) {
+    public TaskStatusEntity createStatus(@RequestBody @Valid TaskStatusDto dto) {
         return taskStatusService.createTaskStatus(dto);
     }
 
@@ -68,8 +68,8 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public TaskStatus updateStatus(@RequestBody @Valid TaskStatusDto dto,
-                                   @PathVariable long id) {
+    public TaskStatusEntity updateStatus(@RequestBody @Valid TaskStatusDto dto,
+                                         @PathVariable long id) {
         return taskStatusService.updateTaskStatus(dto, id);
     }
 

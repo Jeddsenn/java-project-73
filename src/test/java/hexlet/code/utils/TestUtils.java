@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.config.JWTHelper;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.dto.UserDto;
-import hexlet.code.model.Label;
-import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
+import hexlet.code.model.LabelEntity;
+import hexlet.code.model.TaskStatusEntity;
+import hexlet.code.model.UserEntity;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
@@ -87,7 +87,7 @@ public class TestUtils {
         return testRegistrationDto;
     }
 
-    public User getUserByEmail(final String email) {
+    public UserEntity getUserByEmail(final String email) {
         return userRepository.findByEmail(email).get();
     }
 
@@ -119,9 +119,9 @@ public class TestUtils {
         regDefaultUser();
         regDefaultLabel(TEST_USERNAME);
         regDefaultStatus(TEST_USERNAME);
-        final User user = userRepository.findAll().get(0);
-        final TaskStatus taskStatus = taskStatusRepository.findAll().get(0);
-        final Label label = labelRepository.findAll().get(0);
+        final UserEntity user = userRepository.findAll().get(0);
+        final TaskStatusEntity taskStatus = taskStatusRepository.findAll().get(0);
+        final LabelEntity label = labelRepository.findAll().get(0);
         final TaskDto testRegTaskDto = new TaskDto(
                 "task",
                 "description",

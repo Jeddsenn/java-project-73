@@ -3,7 +3,7 @@ package hexlet.code.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.dto.LoginDto;
 import hexlet.code.dto.UserDto;
-import hexlet.code.model.User;
+import hexlet.code.model.UserEntity;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.config.SecurityConfig;
 import hexlet.code.config.SpringConfigForIT;
@@ -57,7 +57,7 @@ public final class UserControllerIT {
     @Test
     public void getUserById() throws Exception {
         utils.regDefaultUser();
-        final User expectedUser = userRepository.findAll().get(0);
+        final UserEntity expectedUser = userRepository.findAll().get(0);
         final var response = utils.perform(
                         MockMvcRequestBuilders
                                 .get(BASE_URL + USER_CONTROLLER_PATH + ID,
@@ -67,7 +67,7 @@ public final class UserControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final User user = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final UserEntity user = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expectedUser.getId(), user.getId());
@@ -86,7 +86,7 @@ public final class UserControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<User> users = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<UserEntity> users = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(users).hasSize(1);
     }
@@ -103,10 +103,10 @@ public final class UserControllerIT {
     public void login() throws Exception {
         utils.regDefaultUser();
         final LoginDto loginDto = new LoginDto(
-                utils.getTestRegistrationDto().getFirstName(),
-                utils.getTestRegistrationDto().getLastName(),
-                utils.getTestRegistrationDto().getEmail(),
-                utils.getTestRegistrationDto().getPassword()
+                utils.getTestRegistrationDto().firstName(),
+                utils.getTestRegistrationDto().lastName(),
+                utils.getTestRegistrationDto().email(),
+                utils.getTestRegistrationDto().password()
         );
         final var loginRequest =
                 MockMvcRequestBuilders.post(BASE_URL + SecurityConfig.LOGIN).content(asJson(loginDto))
@@ -117,10 +117,10 @@ public final class UserControllerIT {
     @Test
     public void loginFail() throws Exception {
         final LoginDto loginDto = new LoginDto(
-                utils.getTestRegistrationDto().getFirstName(),
-                utils.getTestRegistrationDto().getLastName(),
-                utils.getTestRegistrationDto().getEmail(),
-                utils.getTestRegistrationDto().getPassword()
+                utils.getTestRegistrationDto().firstName(),
+                utils.getTestRegistrationDto().lastName(),
+                utils.getTestRegistrationDto().email(),
+                utils.getTestRegistrationDto().password()
         );
         final var loginRequest =
                 MockMvcRequestBuilders.post(BASE_URL + SecurityConfig.LOGIN).content(asJson(loginDto))
