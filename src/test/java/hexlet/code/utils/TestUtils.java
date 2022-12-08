@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.config.JWTHelper;
-import hexlet.code.controller.LabelController;
-import hexlet.code.controller.TaskController;
-import hexlet.code.controller.UserController;
 import hexlet.code.dto.TaskDto;
 import hexlet.code.dto.UserDto;
 import hexlet.code.model.Label;
@@ -24,11 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.util.Map;
 import java.util.Set;
-
-import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,6 +36,14 @@ public class TestUtils {
     public static final String TEST_STATUS_NAME1 = "STATUSCREATEDTWICE";
     public static final String TEST_LABELNAME_1 = "label1";
     public static final String TEST_LABELNAME_2 = "label2";
+
+    public static final String LABEL_CONTROLLER_PATH = "/labels";
+
+    public static final String TASK_CONTROLLER_PATH = "/tasks";
+    public static final String TASK_STATUS_CONTROLLER_PATH = "/statuses";
+
+    public static final String USER_CONTROLLER_PATH = "/users";
+    public static final String ID = "/{id}";
 
     private final UserDto testRegistrationDto = new UserDto(
             TEST_USERNAME,
@@ -98,7 +100,7 @@ public class TestUtils {
     }
 
     public ResultActions regUser(final UserDto dto) throws Exception {
-        final var request = MockMvcRequestBuilders.post(BASE_URL + UserController.USER_CONTROLLER_PATH)
+        final var request = MockMvcRequestBuilders.post(BASE_URL + USER_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
 
@@ -131,7 +133,7 @@ public class TestUtils {
     }
 
     public ResultActions regTask(final TaskDto dto, final String byUser) throws Exception {
-        final var request = MockMvcRequestBuilders.post(BASE_URL + TaskController.TASK_CONTROLLER_PATH)
+        final var request = MockMvcRequestBuilders.post(BASE_URL + TASK_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
 
@@ -144,7 +146,7 @@ public class TestUtils {
 
     public ResultActions regLabel(final LabelDto labelDto, final String byUser) throws  Exception {
         final var request
-                = MockMvcRequestBuilders.post(BASE_URL + LabelController.LABEL_CONTROLLER_PATH)
+                = MockMvcRequestBuilders.post(BASE_URL + LABEL_CONTROLLER_PATH)
                 .content((asJson(labelDto)))
                 .contentType(APPLICATION_JSON);
         return perform(request, byUser);

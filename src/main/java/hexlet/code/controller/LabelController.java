@@ -24,17 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
-import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("${base-url}" + LABEL_CONTROLLER_PATH)
+@RequestMapping("/api" + "/labels")
 public class LabelController {
-    public static final String LABEL_CONTROLLER_PATH = "/labels";
-    private static final String ID = "/{id}";
-
-
     private final LabelRepository labelRepository;
 
     private final LabelService labelService;
@@ -44,7 +39,7 @@ public class LabelController {
             @ApiResponse(responseCode = "200", description = "Label was found"),
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
-    @GetMapping(ID)
+    @GetMapping("/{id}")
     public Label getLabel(@PathVariable long id) {
         return labelRepository.findById(id).get();
     }
@@ -58,10 +53,7 @@ public class LabelController {
     }
 
     @Operation(summary = "Create a new label")
-    @ApiResponses(@ApiResponse(responseCode = "201", content =
-    @Content(schema =
-    @Schema (implementation = Label.class)
-    )))
+    @ApiResponses(@ApiResponse(responseCode = "201"))
     @ResponseStatus(CREATED)
     @PostMapping
     public Label createLabel(@RequestBody @Valid LabelDto labelDto) {
@@ -73,7 +65,7 @@ public class LabelController {
             @ApiResponse(responseCode = "200", description = "Label has been updated"),
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
-    @PutMapping(ID)
+    @PutMapping("/{id}")
     public Label updateLabel(@RequestBody @Valid LabelDto labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
@@ -82,7 +74,7 @@ public class LabelController {
             @ApiResponse(responseCode = "200", description = "Label has been deleted"),
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
-    @DeleteMapping(ID)
+    @DeleteMapping("/{id}")
     public void deleteLabel(@PathVariable long id) {
         labelRepository.deleteById(id);
     }

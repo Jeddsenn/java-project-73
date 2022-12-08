@@ -18,32 +18,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-
-import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
 
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("${base-url}" + TASK_STATUS_CONTROLLER_PATH)
+@RequestMapping("/api" + "/statuses")
 public class TaskStatusController {
 
     private TaskStatusRepository taskStatusRepository;
     private TaskStatusService taskStatusService;
 
-    public static final String TASK_STATUS_CONTROLLER_PATH = "/statuses";
-    public static final String ID = "/{id}";
+
 
     @Operation(summary = "Get a task status by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task status was found"),
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
-    @GetMapping(ID)
+    @GetMapping("/{id}")
     public Optional<TaskStatus> getTaskStatus(@PathVariable long id) {
         return taskStatusRepository.findById(id);
     }
@@ -71,7 +67,7 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "201", description = "Task status has been updated"),
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
-    @PutMapping(ID)
+    @PutMapping("/{id}")
     public TaskStatus updateStatus(@RequestBody @Valid TaskStatusDto dto,
                                    @PathVariable long id) {
         return taskStatusService.updateTaskStatus(dto, id);
@@ -82,7 +78,7 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "201", description = "Task status has been deleted"),
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
-    @DeleteMapping(ID)
+    @DeleteMapping("/{id}")
     public void deleteStatus(@PathVariable long id) {
         taskStatusRepository.deleteById(id);
     }

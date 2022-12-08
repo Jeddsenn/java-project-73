@@ -16,9 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
-import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
-import static hexlet.code.controller.TaskStatusController.ID;
 import static hexlet.code.utils.TestUtils.BASE_URL;
+import static hexlet.code.utils.TestUtils.ID;
+import static hexlet.code.utils.TestUtils.TASK_CONTROLLER_PATH;
 import static hexlet.code.utils.TestUtils.TEST_USERNAME;
 import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
@@ -137,7 +137,7 @@ public class TaskControllerIT {
         utils.regDefaultTask(TEST_USERNAME);
         final Task expectedTask = taskRepository.findAll().get(0);
         Exception exception = assertThrows(
-                Exception.class, () -> utils.perform(get(BASE_URL + TASK_CONTROLLER_PATH + UserController.ID,
+                Exception.class, () -> utils.perform(get(BASE_URL + TASK_CONTROLLER_PATH + ID,
                         expectedTask.getId()))
         );
         String message = exception.getMessage();
@@ -156,7 +156,7 @@ public class TaskControllerIT {
         utils.regDefaultTask(TEST_USERNAME);
         final Long taskId = taskRepository.findAll().get(0).getId() + 1;
 
-        utils.perform(delete(BASE_URL + TASK_CONTROLLER_PATH + UserController.ID, taskId), TEST_USERNAME)
+        utils.perform(delete(BASE_URL + TASK_CONTROLLER_PATH + ID, taskId), TEST_USERNAME)
                 .andExpect(status().isNotFound());
         assertEquals(1, taskRepository.count());
     }

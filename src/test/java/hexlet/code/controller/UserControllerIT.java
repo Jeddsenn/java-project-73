@@ -18,11 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
-import static hexlet.code.utils.TestUtils.BASE_URL;
-import static hexlet.code.utils.TestUtils.TEST_USERNAME;
-import static hexlet.code.utils.TestUtils.TEST_USERNAME1;
-import static hexlet.code.utils.TestUtils.asJson;
-import static hexlet.code.utils.TestUtils.fromJson;
+
+import static hexlet.code.utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -63,7 +60,7 @@ public final class UserControllerIT {
         final User expectedUser = userRepository.findAll().get(0);
         final var response = utils.perform(
                         MockMvcRequestBuilders
-                                .get(BASE_URL + UserController.USER_CONTROLLER_PATH + UserController.ID,
+                                .get(BASE_URL + USER_CONTROLLER_PATH + ID,
                                         expectedUser.getId()),
                         expectedUser.getEmail()
                 ).andExpect(status().isOk())
@@ -84,7 +81,7 @@ public final class UserControllerIT {
         utils.regDefaultUser();
         final var response
                 = utils.perform(MockMvcRequestBuilders
-                        .get(BASE_URL + UserController.USER_CONTROLLER_PATH))
+                        .get(BASE_URL + USER_CONTROLLER_PATH))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -139,7 +136,7 @@ public final class UserControllerIT {
                 TEST_USERNAME1, "new name", "new last name", "new pwd");
         final var updateRequest =
                 MockMvcRequestBuilders
-                        .put(BASE_URL + UserController.USER_CONTROLLER_PATH + UserController.ID,
+                        .put(BASE_URL + USER_CONTROLLER_PATH + ID,
                                 userId)
                         .content(asJson(userDto))
                         .contentType(APPLICATION_JSON);
@@ -155,7 +152,7 @@ public final class UserControllerIT {
         utils.regDefaultUser();
         final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
 
-        utils.perform(delete(BASE_URL + UserController.USER_CONTROLLER_PATH + UserController.ID, userId),
+        utils.perform(delete(BASE_URL + USER_CONTROLLER_PATH + ID, userId),
                         TEST_USERNAME)
                 .andExpect(status().isOk());
         assertEquals(0, userRepository.count());
@@ -173,7 +170,7 @@ public final class UserControllerIT {
         final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
 
         utils
-                .perform(delete(BASE_URL + UserController.USER_CONTROLLER_PATH + UserController.ID, userId),
+                .perform(delete(BASE_URL + USER_CONTROLLER_PATH + ID, userId),
                         TEST_USERNAME1)
                 .andExpect(status().isForbidden());
         assertEquals(2, userRepository.count());
