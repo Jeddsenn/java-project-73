@@ -2,7 +2,7 @@ package hexlet.code.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.config.JWTHelper;
-import hexlet.code.dto.LoginDto;
+import hexlet.code.dto.request.ReqLoginDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +35,7 @@ public final class JWTAuthenticationFilter extends UsernamePasswordAuthenticatio
     @Override
     public Authentication attemptAuthentication(final HttpServletRequest request,
                                                 final HttpServletResponse response) throws AuthenticationException {
-        final LoginDto loginData = getLoginData(request);
+        final ReqLoginDto loginData = getLoginData(request);
         final var authRequest = new UsernamePasswordAuthenticationToken(
                 loginData.name(),
                 loginData.password()
@@ -44,12 +44,12 @@ public final class JWTAuthenticationFilter extends UsernamePasswordAuthenticatio
         return getAuthenticationManager().authenticate(authRequest);
     }
 
-    private LoginDto getLoginData(final HttpServletRequest request) throws AuthenticationException {
+    private ReqLoginDto getLoginData(final HttpServletRequest request) throws AuthenticationException {
         try {
             final String json = request.getReader()
                     .lines()
                     .collect(Collectors.joining());
-            return MAPPER.readValue(json, LoginDto.class);
+            return MAPPER.readValue(json, ReqLoginDto.class);
         } catch (IOException e) {
             throw new BadCredentialsException("Can't extract login data from request");
         }
