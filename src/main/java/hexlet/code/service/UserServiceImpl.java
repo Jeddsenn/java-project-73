@@ -1,6 +1,6 @@
 package hexlet.code.service;
 
-import hexlet.code.dto.UserDto;
+import hexlet.code.dto.request.ReqUserDto;
 import hexlet.code.model.UserEntity;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.config.SecurityConfig;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserEntity createNewUser(UserDto userDto) {
+    public UserEntity createNewUser(ReqUserDto userDto) {
         UserEntity user = new UserEntity();
         user.setFirstName(userDto.firstName());
         user.setLastName(userDto.lastName());
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserEntity updateUser(long id, UserDto userDto) {
+    public UserEntity updateUser(long id, ReqUserDto userDto) {
         final UserEntity userToUpdate = userRepository.findById(id).get();
 
         userToUpdate.setFirstName(userDto.firstName());

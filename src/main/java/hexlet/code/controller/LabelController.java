@@ -1,9 +1,8 @@
 package hexlet.code.controller;
 
 
-import hexlet.code.dto.LabelDto;
+import hexlet.code.dto.request.ReqLabelDto;
 import hexlet.code.model.LabelEntity;
-import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +27,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/api" + "/labels")
 public class LabelController {
-    private final LabelRepository labelRepository;
-
     private final LabelService labelService;
 
     @Operation(summary = "Get a label by id")
@@ -53,7 +50,7 @@ public class LabelController {
     @ApiResponses(@ApiResponse(responseCode = "201"))
     @ResponseStatus(CREATED)
     @PostMapping
-    public LabelEntity createLabel(@RequestBody @Valid LabelDto labelDto) {
+    public LabelEntity createLabel(@RequestBody @Valid ReqLabelDto labelDto) {
         return labelService.createLabel(labelDto);
     }
 
@@ -63,7 +60,7 @@ public class LabelController {
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public LabelEntity updateLabel(@RequestBody @Valid LabelDto labelDto, @PathVariable long id) {
+    public LabelEntity updateLabel(@RequestBody @Valid ReqLabelDto labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
     @Operation(summary = "Delete label")

@@ -45,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // - POST('/api/users')
     // - GET('/api/users')
     // - all urls without '/api' in the beginning
+
+
+
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
                           final UserDetailsService userDetailsServiceValue,
                           final PasswordEncoder passwordEncoderValue, final JWTHelper jwtHelperValue) {

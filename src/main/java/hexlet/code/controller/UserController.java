@@ -1,8 +1,7 @@
 package hexlet.code.controller;
 
 
-import hexlet.code.repository.UserRepository;
-import hexlet.code.dto.UserDto;
+import hexlet.code.dto.request.ReqUserDto;
 import hexlet.code.model.UserEntity;
 import hexlet.code.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,11 +30,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/api" + "/users")
 public class UserController {
 
-
     public static final String USER_CONTROLLER_PATH = "/users";
-
     private final UserService userService;
-    private final UserRepository userRepository;
 
     private static final String ONLY_OWNER_BY_ID = """
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
@@ -63,7 +59,7 @@ public class UserController {
     @ApiResponse(responseCode = "201", description = "User created")
     @ResponseStatus(CREATED)
     @PostMapping
-    public UserEntity createUser(@RequestBody @Valid UserDto userDto) {
+    public UserEntity createUser(@RequestBody @Valid ReqUserDto userDto) {
         return userService.createNewUser(userDto);
     }
 
@@ -74,7 +70,7 @@ public class UserController {
     })
     @PreAuthorize(ONLY_OWNER_BY_ID)
     @PutMapping("/{id}")
-    public UserEntity updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserDto userDto) {
+    public UserEntity updateUser(@PathVariable @Valid long id, @RequestBody @Valid ReqUserDto userDto) {
         return userService.updateUser(id, userDto);
     }
 

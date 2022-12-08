@@ -1,4 +1,4 @@
-package hexlet.code.dto;
+package hexlet.code.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 
 
 public record
-LoginDto (
+ReqLoginDto(
         String firstName,
 
         String lastName,
@@ -16,5 +16,4 @@ LoginDto (
         @NotBlank
         @Size(min = 3, max = 100)
         String password) {
-
 }

@@ -1,11 +1,11 @@
-package hexlet.code.dto;
+package hexlet.code.dto.request;
 
 import javax.validation.constraints.NotBlank;
 
 
 public record
-TaskStatusDto (
+ReqLabelDto(
         @NotBlank
         String name) {
-
 }
+

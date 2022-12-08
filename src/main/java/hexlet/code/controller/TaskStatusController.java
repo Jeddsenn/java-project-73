@@ -2,9 +2,8 @@ package hexlet.code.controller;
 
 
 import hexlet.code.model.TaskStatusEntity;
-import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
-import hexlet.code.dto.TaskStatusDto;
+import hexlet.code.dto.request.ReqTaskStatusDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,7 +28,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/api" + "/statuses")
 public class TaskStatusController {
 
-    private TaskStatusRepository taskStatusRepository;
     private TaskStatusService taskStatusService;
 
 
@@ -55,7 +53,7 @@ public class TaskStatusController {
     @ApiResponse(responseCode = "201")
     @ResponseStatus(CREATED)
     @PostMapping
-    public TaskStatusEntity createStatus(@RequestBody @Valid TaskStatusDto dto) {
+    public TaskStatusEntity createStatus(@RequestBody @Valid ReqTaskStatusDto dto) {
         return taskStatusService.createTaskStatus(dto);
     }
 
@@ -65,7 +63,7 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public TaskStatusEntity updateStatus(@RequestBody @Valid TaskStatusDto dto,
+    public TaskStatusEntity updateStatus(@RequestBody @Valid ReqTaskStatusDto dto,
                                          @PathVariable long id) {
         return taskStatusService.updateTaskStatus(dto, id);
     }

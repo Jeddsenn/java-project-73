@@ -3,7 +3,7 @@ package hexlet.code.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.config.SpringConfigForIT;
-import hexlet.code.dto.TaskDto;
+import hexlet.code.dto.request.ReqTaskDto;
 import hexlet.code.model.TaskEntity;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.TestUtils;
@@ -112,7 +112,7 @@ public class TaskControllerIT {
         utils.regDefaultTask(TEST_USERNAME);
         TaskEntity task = taskRepository.findAll().get(0);
         final Long taskId = task.getId();
-        final var newTaskDto = new TaskDto(
+        final var newTaskDto = new ReqTaskDto(
                 "newTask",
                 "newDescription",
                 task.getTaskStatus().getId(),

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.config.JWTHelper;
-import hexlet.code.dto.TaskDto;
-import hexlet.code.dto.UserDto;
+import hexlet.code.dto.request.ReqTaskDto;
+import hexlet.code.dto.request.ReqUserDto;
 import hexlet.code.model.LabelEntity;
 import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.model.UserEntity;
@@ -13,8 +13,8 @@ import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.dto.LabelDto;
-import hexlet.code.dto.TaskStatusDto;
+import hexlet.code.dto.request.ReqLabelDto;
+import hexlet.code.dto.request.ReqTaskStatusDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,16 +45,16 @@ public class TestUtils {
     public static final String USER_CONTROLLER_PATH = "/users";
     public static final String ID = "/{id}";
 
-    private final UserDto testRegistrationDto = new UserDto(
+    private final ReqUserDto testRegistrationDto = new ReqUserDto(
             TEST_USERNAME,
             "fname",
             "lname",
             "pwd"
     );
-    public static final LabelDto LABEL_DTO_1 = new LabelDto(TEST_LABELNAME_1);
-    public static final LabelDto LABEL_DTO_2 = new LabelDto(TEST_LABELNAME_2);
+    public static final ReqLabelDto LABEL_DTO_1 = new ReqLabelDto(TEST_LABELNAME_1);
+    public static final ReqLabelDto LABEL_DTO_2 = new ReqLabelDto(TEST_LABELNAME_2);
 
-    private final TaskStatusDto testStatusDto = new TaskStatusDto(
+    private final ReqTaskStatusDto testStatusDto = new ReqTaskStatusDto(
             TEST_STATUS_NAME
     );
 
@@ -83,7 +83,7 @@ public class TestUtils {
     }
 
 
-    public UserDto getTestRegistrationDto() {
+    public ReqUserDto getTestRegistrationDto() {
         return testRegistrationDto;
     }
 
@@ -99,7 +99,7 @@ public class TestUtils {
         return regStatus(testStatusDto, byUser);
     }
 
-    public ResultActions regUser(final UserDto dto) throws Exception {
+    public ResultActions regUser(final ReqUserDto dto) throws Exception {
         final var request = MockMvcRequestBuilders.post(BASE_URL + USER_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
@@ -107,7 +107,7 @@ public class TestUtils {
         return perform(request);
     }
 
-    public ResultActions regStatus(final TaskStatusDto dto, final String byUser) throws Exception {
+    public ResultActions regStatus(final ReqTaskStatusDto dto, final String byUser) throws Exception {
         final var request = post(BASE_URL + TASK_STATUS_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
@@ -122,7 +122,7 @@ public class TestUtils {
         final UserEntity user = userRepository.findAll().get(0);
         final TaskStatusEntity taskStatus = taskStatusRepository.findAll().get(0);
         final LabelEntity label = labelRepository.findAll().get(0);
-        final TaskDto testRegTaskDto = new TaskDto(
+        final ReqTaskDto testRegTaskDto = new ReqTaskDto(
                 "task",
                 "description",
                 taskStatus.getId(),
@@ -132,7 +132,7 @@ public class TestUtils {
         return regTask(testRegTaskDto, byUser);
     }
 
-    public ResultActions regTask(final TaskDto dto, final String byUser) throws Exception {
+    public ResultActions regTask(final ReqTaskDto dto, final String byUser) throws Exception {
         final var request = MockMvcRequestBuilders.post(BASE_URL + TASK_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
@@ -144,7 +144,7 @@ public class TestUtils {
         return regLabel(LABEL_DTO_1, byUser);
     }
 
-    public ResultActions regLabel(final LabelDto labelDto, final String byUser) throws  Exception {
+    public ResultActions regLabel(final ReqLabelDto labelDto, final String byUser) throws  Exception {
         final var request
                 = MockMvcRequestBuilders.post(BASE_URL + LABEL_CONTROLLER_PATH)
                 .content((asJson(labelDto)))

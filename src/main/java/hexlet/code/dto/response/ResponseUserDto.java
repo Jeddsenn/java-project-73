@@ -1,11 +1,11 @@
-package hexlet.code.dto;
+package hexlet.code.dto.response;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public record
-UserDto (
+ResponseUserDto(
         @NotBlank
         @Email
         String email,

@@ -5,7 +5,7 @@ import hexlet.code.model.LabelEntity;
 import hexlet.code.model.TaskEntity;
 import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.model.UserEntity;
-import hexlet.code.dto.TaskDto;
+import hexlet.code.dto.request.ReqTaskDto;
 import hexlet.code.repository.TaskRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,13 +25,13 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
 
     @Override
-    public TaskEntity createNewTask(TaskDto taskDto) {
+    public TaskEntity createNewTask(ReqTaskDto taskDto) {
         final TaskEntity newTask = toUserDto(taskDto);
         return taskRepository.save(newTask);
     }
 
     @Override
-    public TaskEntity updateTask(TaskDto taskDto, long id) {
+    public TaskEntity updateTask(ReqTaskDto taskDto, long id) {
         final TaskEntity taskToUpdate = toUserDto(taskDto);
         taskToUpdate.setId(id);
         return taskRepository.save(taskToUpdate);
@@ -53,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-    private TaskEntity toUserDto(final TaskDto dto) {
+    private TaskEntity toUserDto(final ReqTaskDto dto) {
         final UserEntity author = userService.getCurrentUser();
         final UserEntity executor = Optional.ofNullable(dto.executorId())
                 .map(UserEntity::new)

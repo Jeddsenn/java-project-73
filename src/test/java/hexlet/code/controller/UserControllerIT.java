@@ -1,8 +1,8 @@
 package hexlet.code.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import hexlet.code.dto.LoginDto;
-import hexlet.code.dto.UserDto;
+import hexlet.code.dto.request.ReqLoginDto;
+import hexlet.code.dto.request.ReqUserDto;
 import hexlet.code.model.UserEntity;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.config.SecurityConfig;
@@ -102,7 +102,7 @@ public final class UserControllerIT {
     @Test
     public void login() throws Exception {
         utils.regDefaultUser();
-        final LoginDto loginDto = new LoginDto(
+        final ReqLoginDto loginDto = new ReqLoginDto(
                 utils.getTestRegistrationDto().firstName(),
                 utils.getTestRegistrationDto().lastName(),
                 utils.getTestRegistrationDto().email(),
@@ -116,7 +116,7 @@ public final class UserControllerIT {
 
     @Test
     public void loginFail() throws Exception {
-        final LoginDto loginDto = new LoginDto(
+        final ReqLoginDto loginDto = new ReqLoginDto(
                 utils.getTestRegistrationDto().firstName(),
                 utils.getTestRegistrationDto().lastName(),
                 utils.getTestRegistrationDto().email(),
@@ -132,7 +132,7 @@ public final class UserControllerIT {
     public void updateUser() throws Exception {
         utils.regDefaultUser();
         final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
-        final var userDto = new UserDto(
+        final var userDto = new ReqUserDto(
                 TEST_USERNAME1, "new name", "new last name", "new pwd");
         final var updateRequest =
                 MockMvcRequestBuilders
@@ -161,7 +161,7 @@ public final class UserControllerIT {
     @Test
     public void deleteUserFails() throws Exception {
         utils.regDefaultUser();
-        utils.regUser(new UserDto(
+        utils.regUser(new ReqUserDto(
                 TEST_USERNAME1,
                 "fname",
                 "lname",

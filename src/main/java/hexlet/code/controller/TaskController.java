@@ -2,9 +2,8 @@ package hexlet.code.controller;
 
 
 import com.querydsl.core.types.Predicate;
-import hexlet.code.dto.TaskDto;
+import hexlet.code.dto.request.ReqTaskDto;
 import hexlet.code.model.TaskEntity;
-import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +28,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("/api" + "/tasks")
 public class TaskController {
-    private TaskRepository taskRepository;
     private TaskService taskService;
 
 
@@ -48,7 +46,7 @@ public class TaskController {
     }
 
 
-    /// СПРОСИТЬ ЛУЧШЕ ИТЕРЕЙБЛ ИЛИ ЛИСТ ЭНД УАЙ СОУ
+    /// СПРОСИТЬ ЛУЧШЕ ИТЕРЕЙБЛ ИЛИ ЛИСТ ЭНД УАЙ СОУ/ и там дальеш про контейнера тто же вопрос
     @Operation(summary = "Get all tasks if no filtration is set."
             + " Else Retrieves all the elements that match the conditions defined by the specified predicate ")
     @ApiResponses(@ApiResponse(responseCode = "200"))
@@ -61,7 +59,7 @@ public class TaskController {
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Task was created"))
     @PostMapping
     @ResponseStatus(CREATED)
-    public TaskEntity createTask(@RequestBody @Valid TaskDto taskDto) {
+    public TaskEntity createTask(@RequestBody @Valid ReqTaskDto taskDto) {
         return taskService.createNewTask(taskDto);
     }
 
@@ -72,7 +70,7 @@ public class TaskController {
     })
     @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping("/{id}")
-    public TaskEntity updateTask(@RequestBody @Valid TaskDto taskDto, @PathVariable long id) {
+    public TaskEntity updateTask(@RequestBody @Valid ReqTaskDto taskDto, @PathVariable long id) {
         return taskService.updateTask(taskDto, id);
     }
 

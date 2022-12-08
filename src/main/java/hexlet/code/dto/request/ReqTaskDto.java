@@ -1,4 +1,4 @@
-package hexlet.code.dto;
+package hexlet.code.dto.request;
 
 
 import javax.validation.constraints.NotBlank;
@@ -7,7 +7,7 @@ import java.util.Set;
 
 
 public record
-TaskDto (
+ReqTaskDto(
         @NotBlank
         String name,
         String description,
@@ -15,5 +15,4 @@ TaskDto (
         Long taskStatusId,
         Long executorId,
         Set<Long> labelIds) {
-
 }
