@@ -44,15 +44,17 @@ public class TaskController {
     })
     @GetMapping("/{id}")
     public TaskEntity getTask(@PathVariable long id) {
-        return taskRepository.findById(id).get();
+        return taskService.getTask(id);
     }
 
+
+    /// СПРОСИТЬ ЛУЧШЕ ИТЕРЕЙБЛ ИЛИ ЛИСТ ЭНД УАЙ СОУ
     @Operation(summary = "Get all tasks if no filtration is set."
             + " Else Retrieves all the elements that match the conditions defined by the specified predicate ")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping
     public Iterable<TaskEntity> getAllTasks(@QuerydslPredicate final Predicate predicate) {
-        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
+        return taskService.getAllTasks(predicate);
     }
 
     @Operation(summary = "Create a new task")
@@ -82,6 +84,6 @@ public class TaskController {
     @PreAuthorize(ONLY_TASK_OWNER)
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable long id) {
-        taskRepository.deleteById(id);
+        taskService.deleteTask(id);
     }
 }

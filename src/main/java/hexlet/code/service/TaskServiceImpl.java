@@ -1,5 +1,6 @@
 package hexlet.code.service;
 
+import com.querydsl.core.types.Predicate;
 import hexlet.code.model.LabelEntity;
 import hexlet.code.model.TaskEntity;
 import hexlet.code.model.TaskStatusEntity;
@@ -25,18 +26,34 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskEntity createNewTask(TaskDto taskDto) {
-        final TaskEntity newTask = fromDto(taskDto);
+        final TaskEntity newTask = toUserDto(taskDto);
         return taskRepository.save(newTask);
     }
 
     @Override
     public TaskEntity updateTask(TaskDto taskDto, long id) {
-        final TaskEntity taskToUpdate = fromDto(taskDto);
+        final TaskEntity taskToUpdate = toUserDto(taskDto);
         taskToUpdate.setId(id);
         return taskRepository.save(taskToUpdate);
     }
 
-    private TaskEntity fromDto(final TaskDto dto) {
+    @Override
+    public TaskEntity getTask(long id) {
+        return taskRepository.findById(id).get();
+    }
+
+    @Override
+    public Iterable<TaskEntity> getAllTasks(Predicate predicate) {
+        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
+    }
+
+    @Override
+    public void deleteTask(long id) {
+        taskRepository.deleteById(id);
+    }
+
+
+    private TaskEntity toUserDto(final TaskDto dto) {
         final UserEntity author = userService.getCurrentUser();
         final UserEntity executor = Optional.ofNullable(dto.executorId())
                 .map(UserEntity::new)

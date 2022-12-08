@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -41,6 +44,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userToUpdate.setEmail(userDto.email());
         userToUpdate.setPassword(passwordEncoder.encode(userDto.password()));
         return userRepository.save(userToUpdate);
+    }
+
+    @Override
+    public Optional<UserEntity> getUser(long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public List<UserEntity> getAll() {
+        return userRepository.findAll()
+                .stream()
+                .toList();    }
+
+    @Override
+    public void deleteUser(long id) {
+        userRepository.deleteById(id);
+
     }
 
     @Override

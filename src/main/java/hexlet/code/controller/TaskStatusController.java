@@ -41,17 +41,14 @@ public class TaskStatusController {
     })
     @GetMapping("/{id}")
     public Optional<TaskStatusEntity> getTaskStatus(@PathVariable long id) {
-        return taskStatusRepository.findById(id);
+        return taskStatusService.getTaskStatus(id);
     }
 
     @Operation(summary = "Get all statuses")
     @ApiResponse(responseCode = "200")
     @GetMapping
     public List<TaskStatusEntity> getAll() {
-        return taskStatusRepository
-                .findAll()
-                .stream()
-                .toList();
+        return taskStatusService.getAll();
     }
 
     @Operation(summary = "Create a new task status")
@@ -80,7 +77,6 @@ public class TaskStatusController {
     })
     @DeleteMapping("/{id}")
     public void deleteStatus(@PathVariable long id) {
-        taskStatusRepository.deleteById(id);
+        taskStatusService.deleteStatus(id);
     }
-
 }

@@ -49,16 +49,14 @@ public class UserController {
     })
     @GetMapping("/{id}")
     public Optional<UserEntity> getUser(@PathVariable long id) throws NoSuchElementException {
-        return userRepository.findById(id);
+        return userService.getUser(id);
     }
 
     @Operation(summary = "Get all users")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping
     public List<UserEntity> getAll() throws Exception {
-        return userRepository.findAll()
-                .stream()
-                .toList();
+        return userService.getAll();
     }
 
     @Operation(summary = "Create new user")
@@ -88,6 +86,6 @@ public class UserController {
     @PreAuthorize(ONLY_OWNER_BY_ID)
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable long id) {
-        userRepository.deleteById(id);
+        userService.deleteUser(id);
     }
 }

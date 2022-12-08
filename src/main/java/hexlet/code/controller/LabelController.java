@@ -39,15 +39,14 @@ public class LabelController {
     })
     @GetMapping("/{id}")
     public LabelEntity getLabel(@PathVariable long id) {
-        return labelRepository.findById(id).get();
+        return labelService.getLabel(id);
     }
 
     @Operation(summary = "Get all labels")
     @ApiResponses(@ApiResponse (responseCode = "200"))
     @GetMapping
     public List<LabelEntity> getAll() {
-        return labelRepository.
-                findAll();
+        return labelService.getAll();
     }
 
     @Operation(summary = "Create a new label")
@@ -74,7 +73,7 @@ public class LabelController {
     })
     @DeleteMapping("/{id}")
     public void deleteLabel(@PathVariable long id) {
-        labelRepository.deleteById(id);
+        labelService.deleteById(id);
     }
 }
 
