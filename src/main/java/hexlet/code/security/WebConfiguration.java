@@ -1,4 +1,4 @@
-package hexlet.code.config;
+package hexlet.code.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
