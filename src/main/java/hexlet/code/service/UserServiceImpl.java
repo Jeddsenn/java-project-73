@@ -3,7 +3,7 @@ package hexlet.code.service;
 import hexlet.code.dto.request.ReqUserDto;
 import hexlet.code.model.UserEntity;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.config.SecurityConfig;
+import hexlet.code.security.SecurityConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +25,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
 
+
+
     @Override
     public UserEntity createNewUser(ReqUserDto userDto) {
         UserEntity user = new UserEntity();
@@ -37,7 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserEntity updateUser(long id, ReqUserDto userDto) {
-        final UserEntity userToUpdate = userRepository.findById(id).get();
+        final UserEntity userToUpdate = userRepository.findById(id).orElseThrow();
 
         userToUpdate.setFirstName(userDto.firstName());
         userToUpdate.setLastName(userDto.lastName());
@@ -70,7 +72,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserEntity getCurrentUser() {
-        return userRepository.findByEmail(getCurrentUserName()).get();
+        return userRepository.findByEmail(getCurrentUserName()).orElseThrow();
     }
 
     @Override
