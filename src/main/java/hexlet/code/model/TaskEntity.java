@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,13 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Set;
-
-import static javax.persistence.TemporalType.TIMESTAMP;
 
 
 @Entity
@@ -62,8 +58,7 @@ public class TaskEntity {
     private UserEntity executor;
 
     @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
+    private Instant createdAt;
 
     @ManyToMany
     private Set<LabelEntity> labels;

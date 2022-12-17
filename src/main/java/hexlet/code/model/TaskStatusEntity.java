@@ -12,10 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
-import static javax.persistence.TemporalType.TIMESTAMP;
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -34,8 +32,7 @@ public class TaskStatusEntity {
     private String name;
 
     @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
+    private Instant createdAt;
 
     public TaskStatusEntity(Long id) {
         this.id = id;
