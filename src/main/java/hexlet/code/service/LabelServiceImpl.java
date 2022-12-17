@@ -26,14 +26,14 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public LabelEntity updateLabel(final ReqLabelDto labelDto, final long id) {
-        LabelEntity label = labelRepository.findById(id).get();
+        LabelEntity label = labelRepository.findById(id).orElseThrow();
         label.setName(labelDto.name());
         return labelRepository.save(label);
     }
 
     @Override
     public LabelEntity getLabel(long id) {
-        return labelRepository.findById(id).get();
+        return labelRepository.findById(id).orElseThrow();
     }
 
     @Override
