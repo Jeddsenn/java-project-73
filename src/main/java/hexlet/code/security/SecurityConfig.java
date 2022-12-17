@@ -1,4 +1,4 @@
-package hexlet.code.config;
+package hexlet.code.security;
 
 import hexlet.code.controller.UserController;
 import hexlet.code.filter.JWTAuthenticationFilter;
