@@ -3,7 +3,7 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.config.JWTHelper;
+import hexlet.code.security.JWTHelper;
 import hexlet.code.dto.request.ReqTaskDto;
 import hexlet.code.dto.request.ReqUserDto;
 import hexlet.code.model.LabelEntity;

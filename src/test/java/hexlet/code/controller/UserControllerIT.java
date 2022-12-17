@@ -5,7 +5,7 @@ import hexlet.code.dto.request.ReqLoginDto;
 import hexlet.code.dto.request.ReqUserDto;
 import hexlet.code.model.UserEntity;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.config.SecurityConfig;
+import hexlet.code.security.SecurityConfig;
 import hexlet.code.config.SpringConfigForIT;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,12 +53,17 @@ public final class UserControllerIT {
         utils.tearDown();
     }
 
+
+
+
     @Test
     public void registration() throws Exception {
         assertEquals(0, userRepository.count());
         utils.regDefaultUser().andExpect(status().isCreated());
         assertEquals(1, userRepository.count());
     }
+
+
 
     @Test
     public void getUserById() throws Exception {
