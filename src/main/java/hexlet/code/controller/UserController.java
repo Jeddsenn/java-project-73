@@ -27,7 +27,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api" + "/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     public static final String USER_CONTROLLER_PATH = "/users";

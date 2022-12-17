@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api" + "/statuses")
+@RequestMapping("/api/statuses")
 public class TaskStatusController {
 
     private TaskStatusService taskStatusService;

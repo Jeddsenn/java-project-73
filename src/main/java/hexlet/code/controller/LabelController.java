@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api" + "/labels")
+@RequestMapping("/api/labels")
 public class LabelController {
     private final LabelService labelService;
 
