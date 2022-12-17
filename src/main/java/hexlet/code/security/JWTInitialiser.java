@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "jwt")
 @Configuration
 public class JWTInitialiser {
-    @Value("${jwt.issuer:meeeh}") String issuer;
-    @Value("${jwt.expiration-sec:86400}") Long expirationSec;
-    @Value("${jwt.clock-skew-sec:10}") Long clockSkewSec;
-    @Value("${jwt.secret:secret}") String secret;
+    @Value("${jwt.issuer:meeeh}") private String issuer;
+    @Value("${jwt.expiration-sec:86400}") private Long expirationSec;
+    @Value("${jwt.clock-skew-sec:10}") private Long clockSkewSec;
+    @Value("${jwt.secret:secret}") private String secret;
 }
 
