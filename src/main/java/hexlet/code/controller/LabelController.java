@@ -1,7 +1,7 @@
 package hexlet.code.controller;
 
 
-import hexlet.code.dto.request.ReqLabelDto;
+import hexlet.code.dto.request.LabelReq;
 import hexlet.code.model.LabelEntity;
 import hexlet.code.service.LabelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,7 +50,7 @@ public class LabelController {
     @ApiResponses(@ApiResponse(responseCode = "201"))
     @ResponseStatus(CREATED)
     @PostMapping
-    public LabelEntity createLabel(@RequestBody @Valid ReqLabelDto labelDto) {
+    public LabelEntity createLabel(@RequestBody @Valid LabelReq labelDto) {
         return labelService.createLabel(labelDto);
     }
 
@@ -60,7 +60,7 @@ public class LabelController {
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public LabelEntity updateLabel(@RequestBody @Valid ReqLabelDto labelDto, @PathVariable long id) {
+    public LabelEntity updateLabel(@RequestBody @Valid LabelReq labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
     @Operation(summary = "Delete label")

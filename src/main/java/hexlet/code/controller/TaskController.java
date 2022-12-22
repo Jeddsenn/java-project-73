@@ -2,7 +2,7 @@ package hexlet.code.controller;
 
 
 import com.querydsl.core.types.Predicate;
-import hexlet.code.dto.request.ReqTaskDto;
+import hexlet.code.dto.request.TaskReq;
 import hexlet.code.model.TaskEntity;
 import hexlet.code.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,7 +59,7 @@ public class TaskController {
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Task was created"))
     @PostMapping
     @ResponseStatus(CREATED)
-    public TaskEntity createTask(@RequestBody @Valid ReqTaskDto taskDto) {
+    public TaskEntity createTask(@RequestBody @Valid TaskReq taskDto) {
         return taskService.createNewTask(taskDto);
     }
 
@@ -70,7 +70,7 @@ public class TaskController {
     })
     @PreAuthorize(ONLY_TASK_OWNER)
     @PutMapping("/{id}")
-    public TaskEntity updateTask(@RequestBody @Valid ReqTaskDto taskDto, @PathVariable long id) {
+    public TaskEntity updateTask(@RequestBody @Valid TaskReq taskDto, @PathVariable long id) {
         return taskService.updateTask(taskDto, id);
     }
 

@@ -1,6 +1,6 @@
 package hexlet.code.service;
 
-import hexlet.code.dto.request.ReqLabelDto;
+import hexlet.code.dto.request.LabelReq;
 import hexlet.code.model.LabelEntity;
 import hexlet.code.repository.LabelRepository;
 import lombok.AllArgsConstructor;
@@ -18,14 +18,14 @@ public class LabelServiceImpl implements LabelService {
     private LabelRepository labelRepository;
 
     @Override
-    public LabelEntity createLabel(final ReqLabelDto labelDto) {
+    public LabelEntity createLabel(final LabelReq labelDto) {
         LabelEntity newLabel = new LabelEntity();
         newLabel.setName(labelDto.name());
         return labelRepository.save(newLabel);
     }
 
     @Override
-    public LabelEntity updateLabel(final ReqLabelDto labelDto, final long id) {
+    public LabelEntity updateLabel(final LabelReq labelDto, final long id) {
         LabelEntity label = labelRepository.findById(id).orElseThrow();
         label.setName(labelDto.name());
         return labelRepository.save(label);

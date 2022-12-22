@@ -1,4 +1,4 @@
-package hexlet.code.exceptionHandling;
+package hexlet.code.exceptionhandling;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -61,7 +61,7 @@ public class BaseExceptionHandler {
 
     @ResponseStatus(UNAUTHORIZED)
     @ExceptionHandler(UsernameNotFoundException.class)
-    public String userNitFoundExceptionHandler(UsernameNotFoundException exception) {
+    public String userNotFoundExceptionHandler(UsernameNotFoundException exception) {
         return exception.getMessage();
     }
 }

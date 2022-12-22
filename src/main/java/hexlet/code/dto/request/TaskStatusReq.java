@@ -1,10 +1,9 @@
-package hexlet.code.dto.response;
+package hexlet.code.dto.request;
 
 import javax.validation.constraints.NotBlank;
 
 
-public record
-ResponseTaskStatusDto(
+public record TaskStatusReq(
         @NotBlank
         String name) {
 }

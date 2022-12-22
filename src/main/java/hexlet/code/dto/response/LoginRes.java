@@ -5,8 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 
-public record
-ResponseLoginDto(
+public record LoginRes(
         String firstName,
 
         String lastName,

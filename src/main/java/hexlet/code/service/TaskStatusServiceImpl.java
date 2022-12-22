@@ -2,7 +2,7 @@ package hexlet.code.service;
 
 import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.repository.TaskStatusRepository;
-import hexlet.code.dto.request.ReqTaskStatusDto;
+import hexlet.code.dto.request.TaskStatusReq;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +17,14 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     private TaskStatusRepository taskStatusRepository;
 
     @Override
-    public TaskStatusEntity createTaskStatus(final ReqTaskStatusDto dto) {
+    public TaskStatusEntity createTaskStatus(final TaskStatusReq dto) {
         final TaskStatusEntity taskStatus = new TaskStatusEntity();
         taskStatus.setName(dto.name());
         return taskStatusRepository.save(taskStatus);
     }
 
     @Override
-    public TaskStatusEntity updateTaskStatus(ReqTaskStatusDto taskStatusDto, long id) {
+    public TaskStatusEntity updateTaskStatus(TaskStatusReq taskStatusDto, long id) {
         TaskStatusEntity statusDto = taskStatusRepository.findById(id).orElseThrow();
         statusDto.setName(taskStatusDto.name());
         return taskStatusRepository.save(statusDto);

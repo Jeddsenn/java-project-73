@@ -4,8 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public record
-ResponseUserDto(
+public record UserRes(
         @NotBlank
         @Email
         String email,

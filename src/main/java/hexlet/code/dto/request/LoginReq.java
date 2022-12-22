@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReqLoginDto {
+public class LoginReq {
 
         private String firstName;
 

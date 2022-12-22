@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.config.SpringConfigForIT;
-import hexlet.code.dto.request.ReqTaskStatusDto;
+import hexlet.code.dto.request.TaskStatusReq;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -117,7 +117,7 @@ public class TaskStatusControllerIT {
 
         final long statusID = taskStatusRepository.findAll().get(0).getId();
 
-        ReqTaskStatusDto taskStatusDto = new ReqTaskStatusDto(TEST_STATUS_NAME1);
+        TaskStatusReq taskStatusDto = new TaskStatusReq(TEST_STATUS_NAME1);
 
         final var updateRequest =
                 put(BASE_URL + TASK_STATUS_CONTROLLER_PATH + ID, statusID)

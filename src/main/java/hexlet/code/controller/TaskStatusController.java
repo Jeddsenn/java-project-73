@@ -3,7 +3,7 @@ package hexlet.code.controller;
 
 import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.service.TaskStatusService;
-import hexlet.code.dto.request.ReqTaskStatusDto;
+import hexlet.code.dto.request.TaskStatusReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -53,7 +53,7 @@ public class TaskStatusController {
     @ApiResponse(responseCode = "201")
     @ResponseStatus(CREATED)
     @PostMapping
-    public TaskStatusEntity createStatus(@RequestBody @Valid ReqTaskStatusDto dto) {
+    public TaskStatusEntity createStatus(@RequestBody @Valid TaskStatusReq dto) {
         return taskStatusService.createTaskStatus(dto);
     }
 
@@ -63,7 +63,7 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public TaskStatusEntity updateStatus(@RequestBody @Valid ReqTaskStatusDto dto,
+    public TaskStatusEntity updateStatus(@RequestBody @Valid TaskStatusReq dto,
                                          @PathVariable long id) {
         return taskStatusService.updateTaskStatus(dto, id);
     }

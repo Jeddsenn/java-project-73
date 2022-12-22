@@ -1,10 +1,9 @@
-package hexlet.code.dto.response;
+package hexlet.code.dto.request;
 
 import javax.validation.constraints.NotBlank;
 
 
-public record
-ResponseLabelDto(
+public record LabelReq(
         @NotBlank
         String name) {
 }
