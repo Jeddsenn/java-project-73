@@ -1,5 +1,6 @@
 package hexlet.code.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.controller.UserController;
 import hexlet.code.filter.JWTAuthenticationFilter;
 import hexlet.code.filter.JWTAuthorizationFilter;
@@ -41,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTHelper jwtHelper;
+    private final ObjectMapper objectMapper;
+
 
     // - POST('/api/login')
     // - POST('/api/users')
@@ -52,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
                           final UserDetailsService userDetailsServiceValue,
-                          @Autowired final PasswordEncoder passwordEncoderValue, final JWTHelper jwtHelperValue) {
+                          @Autowired final PasswordEncoder passwordEncoderValue, final JWTHelper jwtHelperValue, ObjectMapper objectMapper) {
         this.loginRequest = new AntPathRequestMatcher(baseUrl + LOGIN, POST.toString());
         this.publicUrls = new OrRequestMatcher(
                 loginRequest,
@@ -63,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsServiceValue;
         this.passwordEncoder = passwordEncoderValue;
         this.jwtHelper = jwtHelperValue;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -77,7 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final var authenticationFilter = new JWTAuthenticationFilter(
                 authenticationManagerBean(),
                 loginRequest,
-                jwtHelper
+                jwtHelper,
+                objectMapper
         );
 
         final var authorizationFilter = new JWTAuthorizationFilter(

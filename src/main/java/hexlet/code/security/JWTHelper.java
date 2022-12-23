@@ -23,7 +23,7 @@ public class JWTHelper {
     private final Long clockSkewSec;
     private final Clock clock;
 
-    public JWTHelper(JWTInitialiser jwtInitialiser) {
+    public JWTHelper(JWTConfig jwtInitialiser) {
         this.secretKey = BASE64.encode(jwtInitialiser.getSecret());
         this.issuer = jwtInitialiser.getIssuer();
         this.expirationSec = jwtInitialiser.getExpirationSec();

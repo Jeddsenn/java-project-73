@@ -25,13 +25,14 @@ public final class JWTAuthenticationFilter extends UsernamePasswordAuthenticatio
 
 
 
+
     public JWTAuthenticationFilter(final AuthenticationManager authenticationManager,
                                    final RequestMatcher loginRequest,
-                                   final JWTHelper jwtHelperValue) {
+                                   final JWTHelper jwtHelperValue, ObjectMapper objectMapper) {
         super(authenticationManager);
         super.setRequiresAuthenticationRequestMatcher(loginRequest);
         this.jwtHelper = jwtHelperValue;
-        objectMapper = new ObjectMapper();
+        this.objectMapper = objectMapper;
     }
 
     @Override

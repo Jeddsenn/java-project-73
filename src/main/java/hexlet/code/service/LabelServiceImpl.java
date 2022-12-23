@@ -1,6 +1,7 @@
 package hexlet.code.service;
 
 import hexlet.code.dto.request.LabelReq;
+import hexlet.code.dto.response.LabelRes;
 import hexlet.code.model.LabelEntity;
 import hexlet.code.repository.LabelRepository;
 import lombok.AllArgsConstructor;
@@ -32,8 +33,9 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public LabelEntity getLabel(long id) {
-        return labelRepository.findById(id).orElseThrow();
+    public LabelRes getLabel(long id) {
+        LabelEntity label = labelRepository.findById(id).orElseThrow();
+        return new LabelRes(label.getId(), label.getName());
     }
 
     @Override

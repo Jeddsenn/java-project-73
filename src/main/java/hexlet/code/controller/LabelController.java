@@ -2,6 +2,7 @@ package hexlet.code.controller;
 
 
 import hexlet.code.dto.request.LabelReq;
+import hexlet.code.dto.response.LabelRes;
 import hexlet.code.model.LabelEntity;
 import hexlet.code.service.LabelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +36,7 @@ public class LabelController {
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public LabelEntity getLabel(@PathVariable long id) {
+    public LabelRes getLabel(@PathVariable long id) {
         return labelService.getLabel(id);
     }
 
