@@ -1,10 +1,16 @@
 package hexlet.code.service;
 
-import hexlet.code.dto.LabelDto;
-import hexlet.code.model.Label;
+import hexlet.code.dto.request.LabelReq;
+import hexlet.code.dto.response.LabelRes;
+import hexlet.code.model.LabelEntity;
+
+import java.util.List;
 
 public interface LabelService {
 
-    Label createLabel(LabelDto labelDto);
-    Label updateLabel(LabelDto labelDto, long id);
+    LabelRes createLabel(LabelReq labelDto);
+    LabelRes updateLabel(LabelReq labelDto, long id);
+    LabelRes getLabel(long id);
+    List<LabelEntity> getAll();
+    void deleteById(long id);
 }

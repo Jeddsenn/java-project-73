@@ -7,27 +7,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.Set;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "labels")
+@Table(name = "tasks")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Label {
+public class TaskEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +39,31 @@ public class Label {
     @Column(unique = true)
     private String name;
 
-    @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
+    private String description;
 
-    public Label(Long id) {
+
+    @ManyToOne
+    @JoinColumn(name = "task_status_id")
+    private TaskStatusEntity taskStatus;
+
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    @NotNull
+    private UserEntity author;
+
+
+    @ManyToOne
+    @JoinColumn(name = "executor_id")
+    private UserEntity executor;
+
+    @CreationTimestamp
+    private Instant createdAt;
+
+    @ManyToMany
+    private Set<LabelEntity> labels;
+
+    public TaskEntity(Long id) {
         this.id = id;
     }
 }

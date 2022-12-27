@@ -1,4 +1,4 @@
-package hexlet.code.dto;
+package hexlet.code.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,23 +8,22 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class LoginReq {
 
-    @NotBlank
-    @Email
-    private String email;
+        private String firstName;
 
-    @NotBlank
-    private String firstName;
+        private String lastName;
 
-    @NotBlank
-    private String lastName;
+        @Email
+        @NotBlank
+        private String email;
 
-    @NotBlank
-    @Size(min = 3, max = 100)
-    private String password;
+        @NotBlank
+        @Size(min = 3, max = 100)
+        private String password;
 
 }
