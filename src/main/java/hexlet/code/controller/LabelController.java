@@ -51,7 +51,7 @@ public class LabelController {
     @ApiResponses(@ApiResponse(responseCode = "201"))
     @ResponseStatus(CREATED)
     @PostMapping
-    public LabelEntity createLabel(@RequestBody @Valid LabelReq labelDto) {
+    public LabelRes createLabel(@RequestBody @Valid LabelReq labelDto) {
         return labelService.createLabel(labelDto);
     }
 
@@ -61,7 +61,7 @@ public class LabelController {
             @ApiResponse(responseCode = "404", description = "Label with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public LabelEntity updateLabel(@RequestBody @Valid LabelReq labelDto, @PathVariable long id) {
+    public LabelRes updateLabel(@RequestBody @Valid LabelReq labelDto, @PathVariable long id) {
         return labelService.updateLabel(labelDto, id);
     }
     @Operation(summary = "Delete label")

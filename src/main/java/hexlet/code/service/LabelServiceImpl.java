@@ -19,17 +19,19 @@ public class LabelServiceImpl implements LabelService {
     private LabelRepository labelRepository;
 
     @Override
-    public LabelEntity createLabel(final LabelReq labelDto) {
+    public LabelRes createLabel(final LabelReq labelDto) {
         LabelEntity newLabel = new LabelEntity();
         newLabel.setName(labelDto.name());
-        return labelRepository.save(newLabel);
+        labelRepository.save(newLabel);
+        return new LabelRes(newLabel.getId(), newLabel.getName());
     }
 
     @Override
-    public LabelEntity updateLabel(final LabelReq labelDto, final long id) {
+    public LabelRes updateLabel(final LabelReq labelDto, final long id) {
         LabelEntity label = labelRepository.findById(id).orElseThrow();
         label.setName(labelDto.name());
-        return labelRepository.save(label);
+        labelRepository.save(label);
+        return new LabelRes(label.getId(), label.getName());
     }
 
     @Override

@@ -1,17 +1,15 @@
 package hexlet.code.dto.response;
 
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import hexlet.code.model.LabelEntity;
 import java.util.Set;
 
 
 public record TaskRes(
-        @NotBlank
+        Long id,
         String name,
         String description,
-        @NotNull
         Long taskStatusId,
         Long executorId,
-        Set<Long> labelIds) {
+        Set<LabelEntity> labelIds) {
 }

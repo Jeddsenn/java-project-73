@@ -1,6 +1,7 @@
 package hexlet.code.service;
 
 import com.querydsl.core.types.Predicate;
+import hexlet.code.dto.response.TaskRes;
 import hexlet.code.model.LabelEntity;
 import hexlet.code.model.TaskEntity;
 import hexlet.code.model.TaskStatusEntity;
@@ -25,16 +26,22 @@ public class TaskServiceImpl implements TaskService {
     private final UserService userService;
 
     @Override
-    public TaskEntity createNewTask(TaskReq taskDto) {
+    public TaskRes createNewTask(TaskReq taskDto) {
         final TaskEntity newTask = toUserDto(taskDto);
-        return taskRepository.save(newTask);
+        taskRepository.save(newTask);
+
+        return new TaskRes(newTask.getId(), newTask.getName(), newTask.getDescription(),
+                newTask.getTaskStatus().getId(), newTask.getExecutor().getId(), newTask.getLabels());
     }
 
     @Override
-    public TaskEntity updateTask(TaskReq taskDto, long id) {
+    public TaskRes updateTask(TaskReq taskDto, long id) {
         final TaskEntity taskToUpdate = toUserDto(taskDto);
         taskToUpdate.setId(id);
-        return taskRepository.save(taskToUpdate);
+        taskRepository.save(taskToUpdate);
+        return new TaskRes(taskToUpdate.getId(), taskToUpdate.getName(), taskToUpdate.getDescription(),
+                taskToUpdate.getTaskStatus().getId(), taskToUpdate.getExecutor().getId(), taskToUpdate.getLabels());
+
     }
 
     @Override

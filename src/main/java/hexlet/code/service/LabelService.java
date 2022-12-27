@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface LabelService {
 
-    LabelEntity createLabel(LabelReq labelDto);
-    LabelEntity updateLabel(LabelReq labelDto, long id);
+    LabelRes createLabel(LabelReq labelDto);
+    LabelRes updateLabel(LabelReq labelDto, long id);
     LabelRes getLabel(long id);
     List<LabelEntity> getAll();
     void deleteById(long id);
