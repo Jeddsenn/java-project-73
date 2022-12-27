@@ -23,7 +23,7 @@ public class LabelServiceImpl implements LabelService {
         LabelEntity newLabel = new LabelEntity();
         newLabel.setName(labelDto.name());
         labelRepository.save(newLabel);
-        return new LabelRes(newLabel.getId(), newLabel.getName());
+        return new LabelRes(newLabel.getId(), newLabel.getName(), newLabel.getCreatedAt());
     }
 
     @Override
@@ -31,13 +31,13 @@ public class LabelServiceImpl implements LabelService {
         LabelEntity label = labelRepository.findById(id).orElseThrow();
         label.setName(labelDto.name());
         labelRepository.save(label);
-        return new LabelRes(label.getId(), label.getName());
+        return new LabelRes(label.getId(), label.getName(), label.getCreatedAt());
     }
 
     @Override
     public LabelRes getLabel(long id) {
         LabelEntity label = labelRepository.findById(id).orElseThrow();
-        return new LabelRes(label.getId(), label.getName());
+        return new LabelRes(label.getId(), label.getName(), label.getCreatedAt());
     }
 
     @Override
