@@ -2,6 +2,7 @@ package hexlet.code.controller;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import hexlet.code.dto.response.TaskStatusRes;
 import hexlet.code.model.TaskStatusEntity;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.config.SpringConfigForIT;
@@ -88,11 +89,10 @@ public class TaskStatusControllerIT {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final TaskStatusEntity status = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final TaskStatusRes status = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedStatus.getId(), status.getId());
-        assertEquals(expectedStatus.getName(), status.getName());
+        assertEquals(expectedStatus.getName(), status.name());
     }
 
     @Test

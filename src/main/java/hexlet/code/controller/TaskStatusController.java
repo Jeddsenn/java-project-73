@@ -1,7 +1,7 @@
 package hexlet.code.controller;
 
 
-import hexlet.code.model.TaskStatusEntity;
+import hexlet.code.dto.response.TaskStatusRes;
 import hexlet.code.service.TaskStatusService;
 import hexlet.code.dto.request.TaskStatusReq;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import static org.springframework.http.HttpStatus.CREATED;
 
 
@@ -38,14 +37,14 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public Optional<TaskStatusEntity> getTaskStatus(@PathVariable long id) {
+    public TaskStatusRes getTaskStatus(@PathVariable long id) {
         return taskStatusService.getTaskStatus(id);
     }
 
     @Operation(summary = "Get all statuses")
     @ApiResponse(responseCode = "200")
     @GetMapping
-    public List<TaskStatusEntity> getAll() {
+    public List<TaskStatusRes> getAll() {
         return taskStatusService.getAll();
     }
 
@@ -53,7 +52,7 @@ public class TaskStatusController {
     @ApiResponse(responseCode = "201")
     @ResponseStatus(CREATED)
     @PostMapping
-    public TaskStatusEntity createStatus(@RequestBody @Valid TaskStatusReq dto) {
+    public TaskStatusRes createStatus(@RequestBody @Valid TaskStatusReq dto) {
         return taskStatusService.createTaskStatus(dto);
     }
 
@@ -63,7 +62,7 @@ public class TaskStatusController {
             @ApiResponse(responseCode = "404", description = "Task status with this id wasn`t found")
     })
     @PutMapping("/{id}")
-    public TaskStatusEntity updateStatus(@RequestBody @Valid TaskStatusReq dto,
+    public TaskStatusRes updateStatus(@RequestBody @Valid TaskStatusReq dto,
                                          @PathVariable long id) {
         return taskStatusService.updateTaskStatus(dto, id);
     }

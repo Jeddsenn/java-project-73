@@ -42,7 +42,7 @@ public class TaskController {
             @ApiResponse(responseCode = "404", description = "Task with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public TaskEntity getTask(@PathVariable long id) {
+    public TaskRes getTask(@PathVariable long id) {
         return taskService.getTask(id);
     }
 

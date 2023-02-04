@@ -3,7 +3,6 @@ package hexlet.code.controller;
 
 import hexlet.code.dto.request.LabelReq;
 import hexlet.code.dto.response.LabelRes;
-import hexlet.code.model.LabelEntity;
 import hexlet.code.service.LabelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -43,7 +42,7 @@ public class LabelController {
     @Operation(summary = "Get all labels")
     @ApiResponses(@ApiResponse (responseCode = "200"))
     @GetMapping
-    public List<LabelEntity> getAll() {
+    public List<LabelRes> getAll() {
         return labelService.getAll();
     }
 

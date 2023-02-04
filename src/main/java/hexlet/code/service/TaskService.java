@@ -11,7 +11,7 @@ public interface TaskService {
     TaskRes createNewTask(TaskReq taskDto);
 
     TaskRes updateTask(TaskReq taskDto, long id);
-    TaskEntity getTask(long id);
+    TaskRes getTask(long id);
     Iterable<TaskEntity> getAllTasks(Predicate predicate);
     void deleteTask(long id);
 }

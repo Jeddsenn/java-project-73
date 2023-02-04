@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.dto.request.LoginReq;
 import hexlet.code.dto.request.UserReq;
+import hexlet.code.dto.response.UserRes;
 import hexlet.code.model.UserEntity;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.security.SecurityConfig;
@@ -78,13 +79,12 @@ public final class UserControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final UserEntity user = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final UserRes user = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedUser.getId(), user.getId());
-        assertEquals(expectedUser.getEmail(), user.getEmail());
-        assertEquals(expectedUser.getFirstName(), user.getFirstName());
-        assertEquals(expectedUser.getLastName(), user.getLastName());
+        assertEquals(expectedUser.getEmail(), user.email());
+        assertEquals(expectedUser.getFirstName(), user.firstName());
+        assertEquals(expectedUser.getLastName(), user.lastName());
     }
 
     @Test

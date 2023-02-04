@@ -7,7 +7,6 @@ import hexlet.code.repository.LabelRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 
@@ -41,8 +40,10 @@ public class LabelServiceImpl implements LabelService {
     }
 
     @Override
-    public List<LabelEntity> getAll() {
-        return labelRepository.findAll();
+    public List<LabelRes> getAll() {
+        return labelRepository.findAll().stream()
+                .map(label -> new LabelRes(label.getId(), label.getName(), label.getCreatedAt()))
+                .toList();
     }
 
     @Override

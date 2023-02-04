@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -44,9 +45,10 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
-    @Override
-    public TaskEntity getTask(long id) {
-        return taskRepository.findById(id).orElseThrow();
+    public TaskRes getTask(long id) {
+        TaskEntity task = taskRepository.findById(id).orElseThrow();
+        return new TaskRes(task.getId(), task.getName(), task.getDescription(),
+                task.getTaskStatus().getId(), task.getExecutor().getId(), new HashSet<>(task.getLabels()));
     }
 
     @Override

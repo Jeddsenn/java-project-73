@@ -2,7 +2,7 @@ package hexlet.code.controller;
 
 
 import hexlet.code.dto.request.UserReq;
-import hexlet.code.model.UserEntity;
+import hexlet.code.dto.response.UserRes;
 import hexlet.code.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import static org.springframework.http.HttpStatus.CREATED;
 
 
@@ -44,14 +43,14 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User with this id wasn`t found")
     })
     @GetMapping("/{id}")
-    public Optional<UserEntity> getUser(@PathVariable long id) throws NoSuchElementException {
+    public UserRes getUser(@PathVariable long id) throws NoSuchElementException {
         return userService.getUser(id);
     }
 
     @Operation(summary = "Get all users")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping
-    public List<UserEntity> getAll() throws Exception {
+    public List<UserRes> getAll() throws Exception {
         return userService.getAll();
     }
 
@@ -59,7 +58,7 @@ public class UserController {
     @ApiResponse(responseCode = "201", description = "User created")
     @ResponseStatus(CREATED)
     @PostMapping
-    public UserEntity createUser(@RequestBody @Valid UserReq userDto) {
+    public UserRes createUser(@RequestBody @Valid UserReq userDto) {
         return userService.createNewUser(userDto);
     }
 
@@ -70,7 +69,7 @@ public class UserController {
     })
     @PreAuthorize(ONLY_OWNER_BY_ID)
     @PutMapping("/{id}")
-    public UserEntity updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserReq userDto) {
+    public UserRes updateUser(@PathVariable @Valid long id, @RequestBody @Valid UserReq userDto) {
         return userService.updateUser(id, userDto);
     }
 
