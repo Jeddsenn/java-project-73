@@ -3,6 +3,7 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.security.JWTConfig;
 import hexlet.code.security.JWTConfigurer;
 import hexlet.code.dto.request.TaskReq;
 import hexlet.code.dto.request.UserReq;
@@ -16,6 +17,7 @@ import hexlet.code.repository.UserRepository;
 import hexlet.code.dto.request.LabelReq;
 import hexlet.code.dto.request.TaskStatusReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,6 +29,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+@EnableConfigurationProperties(value = JWTConfig.class)
 @Component
 public class TestUtils {
     public static final String BASE_URL = "/api";
