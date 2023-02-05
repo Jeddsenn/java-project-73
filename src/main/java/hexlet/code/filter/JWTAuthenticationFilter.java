@@ -1,7 +1,7 @@
 package hexlet.code.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.security.JWTHelper;
+import hexlet.code.security.JWTConfigurer;
 import hexlet.code.dto.request.LoginReq;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
 public final class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
-    private final JWTHelper jwtHelper;
+    private final JWTConfigurer jwtHelper;
 
 
 
 
     public JWTAuthenticationFilter(final AuthenticationManager authenticationManager,
                                    final RequestMatcher loginRequest,
-                                   final JWTHelper jwtHelperValue, ObjectMapper objectMapper) {
+                                   final JWTConfigurer jwtHelperValue, ObjectMapper objectMapper) {
         super(authenticationManager);
         super.setRequiresAuthenticationRequestMatcher(loginRequest);
         this.jwtHelper = jwtHelperValue;

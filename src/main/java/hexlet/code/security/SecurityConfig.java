@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RequestMatcher loginRequest;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final JWTHelper jwtHelper;
+    private final JWTConfigurer jwtHelper;
     private final ObjectMapper objectMapper;
 
 
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
                           final UserDetailsService userDetailsServiceValue,
-                          @Autowired final PasswordEncoder passwordEncoderValue, final JWTHelper jwtHelperValue,
+                          @Autowired final PasswordEncoder passwordEncoderValue, final JWTConfigurer jwtHelperValue,
                           ObjectMapper objectMapper) {
         this.loginRequest = new AntPathRequestMatcher(baseUrl + LOGIN, POST.toString());
         this.publicUrls = new OrRequestMatcher(

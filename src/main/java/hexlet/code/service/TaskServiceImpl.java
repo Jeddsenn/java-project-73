@@ -11,7 +11,6 @@ import hexlet.code.repository.TaskRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -53,8 +52,30 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Iterable<TaskEntity> getAllTasks(Predicate predicate) {
-        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
+        if (predicate == null) {
+            return taskRepository.findAll();
+        } else {
+            return taskRepository.findAll(predicate);
+        }
     }
+
+    /*@Override
+    public Iterable<TaskRes> getAllTasks(Predicate predicate) {
+        if (predicate == null) {
+            return taskRepository.findAll().stream()
+                    .map(taskEntity -> new TaskRes(taskEntity.getId(), taskEntity.getName(),
+                            taskEntity.getDescription(), taskEntity.getTaskStatus().getId(),
+                            taskEntity.getExecutor().getId(), new HashSet<>(taskEntity.getLabels())))
+                    .collect(Collectors.toList());
+        } else {
+            List<TaskEntity> taskEntities = StreamSupport.stream(taskRepository.findAll(predicate).spliterator(), false)
+                    .collect(Collectors.toList());
+            return taskEntities.stream().map(taskEntity -> new TaskRes(taskEntity.getId(), taskEntity.getName(),
+                            taskEntity.getDescription(), taskEntity.getTaskStatus().getId(),
+                            taskEntity.getExecutor().getId(), new HashSet<>(taskEntity.getLabels())))
+                    .collect(Collectors.toList());
+        }
+    }*/
 
     @Override
     public void deleteTask(long id) {

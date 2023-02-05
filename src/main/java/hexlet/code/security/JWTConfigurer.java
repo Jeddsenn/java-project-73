@@ -4,17 +4,19 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultClock;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
 import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
-
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static io.jsonwebtoken.impl.TextCodec.BASE64;
 
+@EnableConfigurationProperties(value = JWTConfig.class)
+@Configuration
 @Component
-public class JWTHelper {
+public class JWTConfigurer {
 
     private static final Duration MILLIS_IN_SECOND = Duration.ofMillis(1000);
     private final String secretKey;
@@ -23,11 +25,12 @@ public class JWTHelper {
     private final Long clockSkewSec;
     private final Clock clock;
 
-    public JWTHelper(JWTConfig jwtInitialiser) {
-        this.secretKey = BASE64.encode(jwtInitialiser.getSecret());
-        this.issuer = jwtInitialiser.getIssuer();
-        this.expirationSec = jwtInitialiser.getExpirationSec();
-        this.clockSkewSec = jwtInitialiser.getClockSkewSec();
+
+    public JWTConfigurer(JWTConfig jwtConfig) {
+        this.secretKey = BASE64.encode(jwtConfig.secret());
+        this.issuer = jwtConfig.issuer();
+        this.expirationSec = jwtConfig.expirationSec();
+        this.clockSkewSec = jwtConfig.clockSkewSec();
         this.clock = DefaultClock.INSTANCE;
     }
 

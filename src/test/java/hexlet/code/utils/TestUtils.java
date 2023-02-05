@@ -3,7 +3,7 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.security.JWTHelper;
+import hexlet.code.security.JWTConfigurer;
 import hexlet.code.dto.request.TaskReq;
 import hexlet.code.dto.request.UserReq;
 import hexlet.code.model.LabelEntity;
@@ -72,8 +72,9 @@ public class TestUtils {
 
     @Autowired
     private LabelRepository labelRepository;
+
     @Autowired
-    private JWTHelper jwtHelper;
+    private JWTConfigurer jwtHelper;
 
     public void tearDown() {
         taskRepository.deleteAll();
