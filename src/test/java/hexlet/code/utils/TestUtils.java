@@ -3,36 +3,33 @@ package hexlet.code.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.component.JWTHelper;
-import hexlet.code.controller.LabelController;
-import hexlet.code.controller.TaskController;
-import hexlet.code.controller.UserController;
-import hexlet.code.dto.TaskDto;
-import hexlet.code.dto.UserDto;
-import hexlet.code.model.Label;
-import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
+import hexlet.code.security.JWTConfig;
+import hexlet.code.security.JWTConfigurer;
+import hexlet.code.dto.request.TaskReq;
+import hexlet.code.dto.request.UserReq;
+import hexlet.code.model.LabelEntity;
+import hexlet.code.model.TaskStatusEntity;
+import hexlet.code.model.UserEntity;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.dto.LabelDto;
-import hexlet.code.dto.TaskStatusDto;
+import hexlet.code.dto.request.LabelReq;
+import hexlet.code.dto.request.TaskStatusReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.util.Map;
 import java.util.Set;
-
-import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+@EnableConfigurationProperties(value = JWTConfig.class)
 @Component
 public class TestUtils {
     public static final String BASE_URL = "/api";
@@ -43,16 +40,24 @@ public class TestUtils {
     public static final String TEST_LABELNAME_1 = "label1";
     public static final String TEST_LABELNAME_2 = "label2";
 
-    private final UserDto testRegistrationDto = new UserDto(
+    public static final String LABEL_CONTROLLER_PATH = "/labels";
+
+    public static final String TASK_CONTROLLER_PATH = "/tasks";
+    public static final String TASK_STATUS_CONTROLLER_PATH = "/statuses";
+
+    public static final String USER_CONTROLLER_PATH = "/users";
+    public static final String ID = "/{id}";
+
+    private final UserReq testRegistrationDto = new UserReq(
             TEST_USERNAME,
             "fname",
             "lname",
             "pwd"
     );
-    public static final LabelDto LABEL_DTO_1 = new LabelDto(TEST_LABELNAME_1);
-    public static final LabelDto LABEL_DTO_2 = new LabelDto(TEST_LABELNAME_2);
+    public static final LabelReq LABEL_DTO_1 = new LabelReq(TEST_LABELNAME_1);
+    public static final LabelReq LABEL_DTO_2 = new LabelReq(TEST_LABELNAME_2);
 
-    private final TaskStatusDto testStatusDto = new TaskStatusDto(
+    private final TaskStatusReq testStatusDto = new TaskStatusReq(
             TEST_STATUS_NAME
     );
 
@@ -70,8 +75,9 @@ public class TestUtils {
 
     @Autowired
     private LabelRepository labelRepository;
+
     @Autowired
-    private JWTHelper jwtHelper;
+    private JWTConfigurer jwtHelper;
 
     public void tearDown() {
         taskRepository.deleteAll();
@@ -81,11 +87,11 @@ public class TestUtils {
     }
 
 
-    public UserDto getTestRegistrationDto() {
+    public UserReq getTestRegistrationDto() {
         return testRegistrationDto;
     }
 
-    public User getUserByEmail(final String email) {
+    public UserEntity getUserByEmail(final String email) {
         return userRepository.findByEmail(email).get();
     }
 
@@ -97,15 +103,15 @@ public class TestUtils {
         return regStatus(testStatusDto, byUser);
     }
 
-    public ResultActions regUser(final UserDto dto) throws Exception {
-        final var request = MockMvcRequestBuilders.post(BASE_URL + UserController.USER_CONTROLLER_PATH)
+    public ResultActions regUser(final UserReq dto) throws Exception {
+        final var request = MockMvcRequestBuilders.post(BASE_URL + USER_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
 
         return perform(request);
     }
 
-    public ResultActions regStatus(final TaskStatusDto dto, final String byUser) throws Exception {
+    public ResultActions regStatus(final TaskStatusReq dto, final String byUser) throws Exception {
         final var request = post(BASE_URL + TASK_STATUS_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
@@ -117,10 +123,10 @@ public class TestUtils {
         regDefaultUser();
         regDefaultLabel(TEST_USERNAME);
         regDefaultStatus(TEST_USERNAME);
-        final User user = userRepository.findAll().get(0);
-        final TaskStatus taskStatus = taskStatusRepository.findAll().get(0);
-        final Label label = labelRepository.findAll().get(0);
-        final TaskDto testRegTaskDto = new TaskDto(
+        final UserEntity user = userRepository.findAll().get(0);
+        final TaskStatusEntity taskStatus = taskStatusRepository.findAll().get(0);
+        final LabelEntity label = labelRepository.findAll().get(0);
+        final TaskReq testRegTaskDto = new TaskReq(
                 "task",
                 "description",
                 taskStatus.getId(),
@@ -130,8 +136,8 @@ public class TestUtils {
         return regTask(testRegTaskDto, byUser);
     }
 
-    public ResultActions regTask(final TaskDto dto, final String byUser) throws Exception {
-        final var request = MockMvcRequestBuilders.post(BASE_URL + TaskController.TASK_CONTROLLER_PATH)
+    public ResultActions regTask(final TaskReq dto, final String byUser) throws Exception {
+        final var request = MockMvcRequestBuilders.post(BASE_URL + TASK_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
 
@@ -142,9 +148,9 @@ public class TestUtils {
         return regLabel(LABEL_DTO_1, byUser);
     }
 
-    public ResultActions regLabel(final LabelDto labelDto, final String byUser) throws  Exception {
+    public ResultActions regLabel(final LabelReq labelDto, final String byUser) throws  Exception {
         final var request
-                = MockMvcRequestBuilders.post(BASE_URL + LabelController.LABEL_CONTROLLER_PATH)
+                = MockMvcRequestBuilders.post(BASE_URL + LABEL_CONTROLLER_PATH)
                 .content((asJson(labelDto)))
                 .contentType(APPLICATION_JSON);
         return perform(request, byUser);

@@ -1,9 +1,10 @@
 package hexlet.code.service;
 
-import hexlet.code.dto.UserDto;
+import hexlet.code.dto.request.UserReq;
+import hexlet.code.dto.response.UserRes;
+import hexlet.code.model.UserEntity;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.config.security.SecurityConfig;
-import hexlet.code.model.User;
+import hexlet.code.security.SecurityConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,25 +24,60 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
 
+
+
     @Override
-    public User createNewUser(UserDto userDto) {
-        User user = new User();
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(user);
+    public UserRes createNewUser(UserReq userDto) {
+        UserEntity user = new UserEntity();
+        user.setFirstName(userDto.firstName());
+        user.setLastName(userDto.lastName());
+        user.setEmail(userDto.email());
+        user.setPassword(passwordEncoder.encode(userDto.password()));
+        UserEntity savedUser = userRepository.save(user);
+        return new UserRes(savedUser.getEmail(), savedUser.getFirstName(),
+                savedUser.getLastName(), savedUser.getPassword());
     }
 
-    @Override
-    public User updateUser(long id, UserDto userDto) {
-        final User userToUpdate = userRepository.findById(id).get();
 
-        userToUpdate.setFirstName(userDto.getFirstName());
-        userToUpdate.setLastName(userDto.getLastName());
-        userToUpdate.setEmail(userDto.getEmail());
-        userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(userToUpdate);
+    @Override
+    public UserRes updateUser(long id, UserReq userDto) {
+        final UserEntity userToUpdate = userRepository.findById(id).orElseThrow();
+
+        final UserRes updatedUser = new UserRes(
+                userDto.email(),
+                userDto.firstName(),
+                userDto.lastName(),
+                passwordEncoder.encode(userDto.password())
+        );
+
+        userToUpdate.setFirstName(userDto.firstName());
+        userToUpdate.setLastName(userDto.lastName());
+        userToUpdate.setEmail(userDto.email());
+        userToUpdate.setPassword(passwordEncoder.encode(userDto.password()));
+        userRepository.save(userToUpdate);
+        return updatedUser;
+    }
+
+    public UserRes getUser(long id) {
+        UserEntity user = userRepository.findById(id).orElseThrow();
+        return new UserRes(user.getEmail(), user.getFirstName(), user.getLastName(), user.getPassword());
+    }
+
+
+    @Override
+    public List<UserRes> getAll() {
+        return userRepository.findAll().stream()
+                .map(userEntity -> new UserRes(userEntity.getEmail(),
+                        userEntity.getFirstName(), userEntity.getLastName(),
+                        userEntity.getPassword()))
+                .toList();
+    }
+
+
+    @Override
+    public void deleteUser(long id) {
+        userRepository.deleteById(id);
+
     }
 
     @Override
@@ -49,8 +86,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getCurrentUser() {
-        return userRepository.findByEmail(getCurrentUserName()).get();
+    public UserEntity getCurrentUser() {
+        return userRepository.findByEmail(getCurrentUserName()).orElseThrow();
     }
 
     @Override
@@ -60,7 +97,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Not found user with 'username': " + username));
     }
 
-    private UserDetails buildSpringUser(final User user) {
+    private UserDetails buildSpringUser(final UserEntity user) {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),

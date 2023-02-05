@@ -1,9 +1,10 @@
-package hexlet.code.config.security;
+package hexlet.code.security;
 
-import hexlet.code.component.JWTHelper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.controller.UserController;
 import hexlet.code.filter.JWTAuthenticationFilter;
 import hexlet.code.filter.JWTAuthorizationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -40,15 +41,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RequestMatcher loginRequest;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final JWTHelper jwtHelper;
+    private final JWTConfigurer jwtHelper;
+    private final ObjectMapper objectMapper;
+
 
     // - POST('/api/login')
     // - POST('/api/users')
     // - GET('/api/users')
     // - all urls without '/api' in the beginning
+
+
+
+
     public SecurityConfig(@Value("${base-url}") final String baseUrl,
                           final UserDetailsService userDetailsServiceValue,
-                          final PasswordEncoder passwordEncoderValue, final JWTHelper jwtHelperValue) {
+                          @Autowired final PasswordEncoder passwordEncoderValue, final JWTConfigurer jwtHelperValue,
+                          ObjectMapper objectMapper) {
         this.loginRequest = new AntPathRequestMatcher(baseUrl + LOGIN, POST.toString());
         this.publicUrls = new OrRequestMatcher(
                 loginRequest,
@@ -59,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsServiceValue;
         this.passwordEncoder = passwordEncoderValue;
         this.jwtHelper = jwtHelperValue;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -73,7 +82,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final var authenticationFilter = new JWTAuthenticationFilter(
                 authenticationManagerBean(),
                 loginRequest,
-                jwtHelper
+                jwtHelper,
+                objectMapper
         );
 
         final var authorizationFilter = new JWTAuthorizationFilter(

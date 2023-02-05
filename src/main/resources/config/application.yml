@@ -20,3 +20,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
+
+  profiles:
+    active: prod

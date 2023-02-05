@@ -3,8 +3,9 @@ package hexlet.code.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.config.SpringConfigForIT;
-import hexlet.code.dto.TaskDto;
-import hexlet.code.model.Task;
+import hexlet.code.dto.request.TaskReq;
+import hexlet.code.dto.response.TaskRes;
+import hexlet.code.model.TaskEntity;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,9 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
-import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
-import static hexlet.code.controller.TaskStatusController.ID;
 import static hexlet.code.utils.TestUtils.BASE_URL;
+import static hexlet.code.utils.TestUtils.ID;
+import static hexlet.code.utils.TestUtils.TASK_CONTROLLER_PATH;
 import static hexlet.code.utils.TestUtils.TEST_USERNAME;
 import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
@@ -84,12 +85,12 @@ public class TaskControllerIT {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
-        final Task task = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final TaskRes task = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedTask.getId(), task.getId());
-        assertEquals(expectedTask.getName(), task.getName());
-        assertEquals(expectedTask.getDescription(), task.getDescription());
+        assertEquals(expectedTask.getId(), task.id());
+        assertEquals(expectedTask.getName(), task.name());
+        assertEquals(expectedTask.getDescription(), task.description());
 
     }
 
@@ -102,7 +103,7 @@ public class TaskControllerIT {
                 .andReturn()
                 .getResponse();
 
-        final List<Task> tasks = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final List<TaskEntity> tasks = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
         assertThat(tasks).hasSize(1);
     }
@@ -110,9 +111,9 @@ public class TaskControllerIT {
     @Test
     public void updateTask() throws Exception {
         utils.regDefaultTask(TEST_USERNAME);
-        Task task = taskRepository.findAll().get(0);
+        TaskEntity task = taskRepository.findAll().get(0);
         final Long taskId = task.getId();
-        final var newTaskDto = new TaskDto(
+        final var newTaskDto = new TaskReq(
                 "newTask",
                 "newDescription",
                 task.getTaskStatus().getId(),
@@ -129,15 +130,15 @@ public class TaskControllerIT {
         utils.perform(updateRequest, TEST_USERNAME).andExpect(status().isOk());
         assertTrue(taskRepository.existsById(taskId));
         assertNull(taskRepository.findByName(task.getName()).orElse(null));
-        assertNotNull(taskRepository.findByName(newTaskDto.getName()).orElse(null));
+        assertNotNull(taskRepository.findByName(newTaskDto.name()).orElse(null));
     }
 
     @Test
     public void getTaskByIdFails() throws Exception {
         utils.regDefaultTask(TEST_USERNAME);
-        final Task expectedTask = taskRepository.findAll().get(0);
+        final TaskEntity expectedTask = taskRepository.findAll().get(0);
         Exception exception = assertThrows(
-                Exception.class, () -> utils.perform(get(BASE_URL + TASK_CONTROLLER_PATH + UserController.ID,
+                Exception.class, () -> utils.perform(get(BASE_URL + TASK_CONTROLLER_PATH + ID,
                         expectedTask.getId()))
         );
         String message = exception.getMessage();
@@ -156,7 +157,7 @@ public class TaskControllerIT {
         utils.regDefaultTask(TEST_USERNAME);
         final Long taskId = taskRepository.findAll().get(0).getId() + 1;
 
-        utils.perform(delete(BASE_URL + TASK_CONTROLLER_PATH + UserController.ID, taskId), TEST_USERNAME)
+        utils.perform(delete(BASE_URL + TASK_CONTROLLER_PATH + ID, taskId), TEST_USERNAME)
                 .andExpect(status().isNotFound());
         assertEquals(1, taskRepository.count());
     }

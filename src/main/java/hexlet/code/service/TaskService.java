@@ -1,12 +1,17 @@
 package hexlet.code.service;
 
 
-import hexlet.code.dto.TaskDto;
-import hexlet.code.model.Task;
+import com.querydsl.core.types.Predicate;
+import hexlet.code.dto.request.TaskReq;
+import hexlet.code.dto.response.TaskRes;
+import hexlet.code.model.TaskEntity;
 
 public interface TaskService {
 
-    Task createNewTask(TaskDto taskDto);
+    TaskRes createNewTask(TaskReq taskDto);
 
-    Task updateTask(TaskDto taskDto, long id);
+    TaskRes updateTask(TaskReq taskDto, long id);
+    TaskRes getTask(long id);
+    Iterable<TaskEntity> getAllTasks(Predicate predicate);
+    void deleteTask(long id);
 }
